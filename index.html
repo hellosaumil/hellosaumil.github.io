@@ -1,53 +1,103 @@
 <html>
-    <head>
-        <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,100' rel='stylesheet' type='text/css'>
-            <link rel='stylesheet' href='style.css'/>
-            </head>
-            
-            <body>
-            <div class="header">
-            <div class="container">
-            <h1>Innovation Cloud</h1>
-            <p>Connect your ideas globally</p>
-            <a href="#" class="btn">Learn more</a>
+
+<head>
+<title> Thanks for passing by - Saumil Shah </title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="jquery.min.js"></script>
+<script src="typed.js" type="text/javascript"></script>
+
+
+<script>
+$(function(){
+
+    $("#typed").typed({
+        strings: ["Typed.js is a <strong>jQuery</strong> plugin.", "It <em>types</em> out sentences.", "And then deletes them.", "Try it out!"],
+        stringsElement: $('#typed-strings'),
+        typeSpeed: 30,
+        backDelay: 500,
+        loop: false,
+        contentType: 'html', // or text
+        // defaults to false for infinite loop
+        loopCount: true,
+        callback: function(){ foo(); },
+        // resetCallback: function() { newTyped(); }
+    });
+
+    $(".reset").click(function(){
+
+      $("#typed").typed({
+          strings: ["Typed.js is a <strong>jQuery</strong> plugin.", "It <em>types</em> out sentences.", "And then deletes them.", "Try it out!"],
+          stringsElement: $('#typed-strings'),
+          typeSpeed: 30,
+          backDelay: 500,
+          loop: false,
+          contentType: 'html', // or text
+          // defaults to false for infinite loop
+          loopCount: true,
+          callback: function(){ foo(); },
+          // resetCallback: function() { newTyped(); }
+      });
+
+
+        // $("#typed").typed('reset');
+    });
+
+});
+
+</script>
+
+
+</head>
+
+<body>
+
+  <header class="Sheader">
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <h1 class="SS">Saumil Shah</h1>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+
+  </header>
+
+    <div class="wrap">
+        <h1 class="h1">Hey, how are you?
+        <a class="reset"> <img src="reload.png"></img> </a>
+        </h1>
+
+        <div class="type-wrap">
+            <div id="typed-strings">
+                <p>Hi, how you doing?</p>
+                <span><strong>Thanks</strong> for passing by...</span>
+                <p>My website is under <em>maintenance</em>.</p>
+                <p>You can check my <strong>LinkedIn profile</strong> instead!</p>
             </div>
-            </div>
-            
-            <div class="nav">
-            <div class="container">
-            <ul>
-            <li>Register</li>
-            <li>Schedule</li>
-            <li>Sponsors</li>
-            <li>About</li>
-            <li>Contact</li>
-            </ul>
-            </div>
-            </div>
-            
-            <div class="main">
-            <div class="container">
-            <img src="https://s3.amazonaws.com/codecademy-content/projects/innovation-cloud/cloud.svg" height="128" width="196">
-            <h2>The Innovation Cloud Conference</h2>
-            <p>Connect with the best minds across a wide range of industries to share ideas and brainstorm new solutions to challenging problems.</p>
-            <p>Hear industry leaders talk about what worked (and what didn't) so that you can save time on your most challenging projects.</p>
-            <p>Learn about the latest research and technologies that you can use immediately to invent the future.</p>
-            </div>
-            </div>
-            
-            <div class="jumbotron">
-                <div class="container">
-                    <h2>Stay connected</h2>
-                    <p>Receive weekly insights from industry insiders.</p>
-                    <a href="#" class="btn">Join</a>
-                </div>
-            </div>
-            
-            <div class="footer">
-                <div class="container">
-                    <p>© Innovation Cloud Conference</p>
-                </div>
-            </div>
-            
-            </body>
+            <span id="typed" style="white-space:pre;"></span>
+
+        </div>
+
+        <br>
+        <div class="linksa">
+            <a href="#">Saumil Shah on LinkedIn</a>
+        </div>
+    </div>
+
+
+    <div class="footer"> ________________________________________________________________________________
+      <br>
+
+    Copyright &copy; 2016 hellosaumil. All rights reserved.
+    Copyrights <a href="http://hellosaumil.github.io"> hellosaumil.github.io </a>
+  </div>
+
+</body>
+
 </html>
