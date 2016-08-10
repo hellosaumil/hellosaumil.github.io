@@ -78,7 +78,7 @@ a {
 
 .footer {
   padding-left: 100;
-  padding-top: 10;
+  padding-top: 16;
   color: #383841;
   font-size: 12;
   font-family: "Helvetica", "Arial", sans-serif;
@@ -94,7 +94,7 @@ header h1 {
 
 header {
   background-color: #263d36;
-  background-image: url("header.png");
+  background-image: url("header.jpg");
   background-position: center left;
   background-repeat:no-repeat;
   background-size: cover;
@@ -118,7 +118,7 @@ header {
 }
 
 .linksa{
-  padding-top: 10;
+  padding-top: 7;
   color: #e81c4f;
 }
 
