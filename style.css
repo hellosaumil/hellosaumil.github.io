@@ -19,10 +19,12 @@ body {
 
   //font-family: "Myriad Pro", Myriad, "Liberation Sans", "Nimbus Sans L", "Helvetica Neue", Helvetica, Arial, sans-serif;
   
-  font-family: 'Myriad-Pro';
-  src: url("Myriad-Pro-Light.ttf");
+  //font-family: 'Myriad-Pro';
+  //src: url("Myriad-Pro-Light.ttf");
 
-  font-weight: inherit;
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-weight:lighter;
+
   text-align: right;
   font-size: 4.3em;
   /*max-height: 85;*/
