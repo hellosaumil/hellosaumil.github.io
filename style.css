@@ -1,5 +1,5 @@
 @font-face{
-  font-family: 'MyriadSF'; src: url('Myriad-Pro-Light.ttf') format('truetype');
+  font-family: 'SFO'; src: url('SF-Thin.ttf') format('truetype');
 }
 
 body {
@@ -23,12 +23,8 @@ body {
 
   //font-family: "Myriad-Pro", Myriad, "Liberation Sans", "Nimbus Sans L", "Helvetica Neue", Helvetica, Arial, sans-serif;
   
-  
-  font-family: "MyriadSF", sans-serif;
-  //src: url("Myriad-Pro-Light.ttf");
-
-  //font-family: "Helvetica", "Arial", sans-serif;
-  //font-weight:lighter;
+  font-family: "SFO", sans-serif;
+  font-weight:lighter;
 
   text-align: right;
   font-size: 4.3em;
