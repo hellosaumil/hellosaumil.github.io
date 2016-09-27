@@ -1,0 +1,326 @@
+<html>
+
+<head>
+<title> SEAS Face Recognition Database </title>
+
+<script src="jquery.min.js"></script>
+<script src="typed.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="normalize.css">
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="headhesive.css">
+
+<link rel="stylesheet" type="text/css" href="style.css">
+<script type="text/javascript" src="jquery.interactive_bg.js"></script>
+
+<script>
+$(function(){
+
+    $("#typed").typed({
+        stringsElement: $('#typed-strings'),
+        typeSpeed: 30,
+        backDelay: 500,
+        loop: false,
+        contentType: 'html', // or text
+        // defaults to false for infinite loop
+        loopCount: true,
+        callback: function(){ foo(); },
+        // resetCallback: function() { newTyped(); }
+    });
+
+    $(".reset").click(function(){
+
+      $("#typed").typed({
+          stringsElement: $('#typed-strings'),
+          typeSpeed: 30,
+          backDelay: 500,
+          loop: false,
+          contentType: 'html', // or text
+          // defaults to false for infinite loop
+          loopCount: true,
+          callback: function(){ foo(); },
+          // resetCallback: function() { newTyped(); }
+      });
+    });
+
+});
+
+</script>
+</head>
+
+<body>
+
+  <header class="banner">
+      <nav class="container">
+          <a class="headhesiveHeader" href="#start">SEAS-FR-DB</a>
+          <ul class="nav">
+              <li class="nav__item"><a href="#Description">Description</a></li>
+              <li class="nav__item"><a href="#DBase">Database</a></li>
+              <li class="nav__item"><a href="#Vid">Video</a></li>
+              <li class="nav__item"><a href="#Sub">Subjects</a></li>
+              <li class="nav__item"><a href="#ctb">Acknowledgement</a></li>
+              <li class="nav__item"><a href="#github">On Github</a></li>
+          </ul>
+      </nav>
+  </header>
+
+
+  <header  id="start" class="Sheader">
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <h1 class="SS">SEAS-FR-DB</h1>
+      <br>
+      <br>
+  </header>
+
+    <div class="wrap">
+    <a id="showHere"></a>
+        <h1>Welcome
+          <a class="reset"> <img class="rload" src="reload.png"></img> </a>
+        </h1>
+
+        <div class="type-wrap">
+            <div id="typed-strings">
+                <p>Hi, welcome to the <strong>SEAS-FR-DB</strong>!</p>
+                <p>Face Recognition Database for <em><u>Videos</u></em> with <strong>1080p and 30fps</strong>.</p>
+                <p>You can check <strong>More Details</strong> by scrolling down!</p>
+            </div>
+            <span id="typed" style="white-space:pre;"></span>
+
+        </div>
+
+        <br>
+        <br>
+        <div class = "Para">
+          <h1 id='Description'>Description</h1>
+
+          <p> Most of the databases available out there are not useful when one wants to perform face recognition on a video.
+            These databases consist of images of different subjects in different environment
+            and but <strong>fail to provide</strong> provide any video.
+            There is a need for Video Database with benchmarked data
+            to perform Face Recognition efficiently on videos.
+          </p>
+
+          <p> This database is aimed to specifically tackle that problem and
+            provide a database that can be used for Face Recognition in <strong>Video</strong>.
+            This can be useful in Real-Time Video scenario.
+            In which, there are different subjects (3) with High Definition Video (Full HD - <strong>1080p</strong>)
+            and with <strong>30fps</strong> for the use of Real-Time Scenario.
+            Our database also provide Training Videos as well as Testing Videos.
+          </p>
+
+          <p>
+            We hope that this database proves itself useful for the Face Recognition Community.
+          </p>
+
+          <br>
+        <h1 id='DBase'>Database</h1>
+
+          <span id="details">
+
+            <span id='s3'>3</span> <span>Test Subjects</span>
+            <br><br>
+            <span id='v4'>4</span> Videos <span>for Each Subject</span>
+            <br><br>
+            <span id='v5'>For Each Video,</span> <span>Duration : <span id='d4'>4 sec</span> , Total Frames : <span id='d5'>120 frames</span></span>
+
+          </span>
+
+          <br>
+          <br>
+          <h1 id='Vid'>Videos</h1>
+
+          <p>
+            <img style="float:left" id = "vidp" src="vid.jpg"/>
+
+            To the left is the File Hierarchy of Videos in our Database. There are 2 sub directories <strong>Training Set</strong> and <strong>Testing Set</strong>.
+            Training Set has 4 sub-folders s1 to s3 each having videos of subjects 1 to 3 respectively.
+            Testing Set has 2 videos that are different from the Training Set.
+            <br>
+            For any video file starting with <em>'s....mov'</em>,
+          </p>
+
+
+          <p>
+<strong>Format : sX_V.mov</strong> ;  Where, X = Subject No & V = Video No
+          <br><br>
+<strong>Example:</strong>
+For Subject - 3, Video-2:
+          <br>
+Therefore,
+X = 3,V = 2, F = S, L = S, Z = 1 - 120
+          <br><br>
+File Names would be : <strong>"<em>s3_2.mov</em>"</strong>
+          <br><br>
+Which is at Location - <strong>"<em>SEAS-FR-DB/Videos/Training Set/s3/s3_2.mov</em>"</strong>
+          </p>
+
+          <br>
+          <br>
+          <br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br>
+          <h1 style="float:both" id='TIm'>Training Images</h1>
+
+          <p>
+            <img style="float:left" id = "vidp" src="tid.jpg"/>
+
+            To the left is the File Hierarchy of Training Images in our Database. There are 3 sub directories for each Subject.
+            Each directory has 4 other sub-folders each having extracted images of the corresponding video of that subject from the
+            Training Set Videos.
+            <br>
+            For any image file starting with <em>'s... .jpg'</em>,
+          </p>
+
+          <p>
+Here, <strong>Format : sX__FL_V_Z.jpg </strong> ;
+<br><br>
+Where,<br>
+X = Subject No<br>
+F = Subject's First Name Initial<br>
+L = Subject's Last Name Initial<br>
+V = Video No (Video from Testing Set Directory)<br>
+Z = Frame No
+          <br><br>
+<strong>Example:</strong>
+For Subject - 3, Video-2:
+          <br>
+          Subject Name is : Saumil Shah
+          <br>
+Therefore,
+X = 3,V = 2, F = S, L = S, Z = 1 - 120
+          <br><br>
+          File Names would Range from, <br>
+          <strong>"<em>s3__SS_2_1.jpg</em>"</strong>
+          to
+          <strong>"<em>s3__SS_2_120.jpg</em>"</strong>
+          <br> <br>
+          Training Video is at Location - <strong>"<em>SEAS-FR-DB/Videos/Training Set/s3/s3_2.mov</em>"</strong>
+          </p>
+          <br><br>
+          <br><br>
+
+          </p>
+          <br><br>
+          <h1 id='Sub'>Subjects</h1>
+
+          <span id="details2">
+
+            <span id='s3'>3</span> <span>Trained Subjects</span> that act as <span id='d5'>Known Subjects</span>
+            <br><br>
+            <span id='v4'>2</span> Subjects that act as <span id='d6'>Unknown Subjects</span>
+          </span>
+          <br>
+          <p>
+            <img id="sub1" src="s1.png">
+            <img id="sub2" src="s2.png"/>
+            <img id="sub3" src="s3.png"/>
+
+            <p id="knw"> Subject1 Subject2 Subject3 </p>
+        </p>
+          <p>
+            <img id="sub4" src="s4.png"/>
+            <img id="sub5" src="s5.png"/>
+
+            <p id="unknw"> Subject4 Subject5</p>
+          </p>
+
+          <br><br>
+          <h1 id='ctb'>Contributors</h1>
+
+          <span class="contribute">
+            <p>
+            <a class="cntb" href="http://hellosaumil.github.io/">Saumil Shah - 131044</a>
+            <br></p>
+            <p>
+            <a class="cntb" href="https://in.linkedin.com/in/axat-chaudhary-a148857b">Axat Chaudhary - 131006</a>
+            <br></p>
+            <p>
+            <a class="cntb" href="https://in.linkedin.com/in/mayank-jobanputra-55920b7a">Mayank Jobanputra - 131026</a>
+            <br></p>
+
+          <br><br>
+          <h1 id='gud'>Acknowledgements</h1>
+          <p>
+            We sincerely thank
+            <a class="cntb" href="http://seas.ahduni.edu.in/people-details/faculty-list/ratnik">Dr. Ratnik Gandhi</a>,
+            <a class="cntb" href="http://seas.ahduni.edu.in/people-details/faculty-list/mehul_raval">Dr. Mehul S. Raval</a> for their constant guidance and support
+            for our Face Recognition project and SEAS-FR-Database.
+          </p>
+        </span>
+          <br><br><br>
+          <h1 id='gdb'>Get the Database</h1>
+          <p>
+
+            <div id = "github" class="linksa">
+                <a href="http://github.com/hellosaumil/SEAS-FR-DB">Fork us on Github</a>
+            </div>
+            <br> Benchmarking Details can also be found at Github.
+            <br>
+            If you use this database, or refer to its results, please <strong>cite</strong> us as per following:<br>
+
+            <p class='gtdb'>
+            Saumil Shah and Axat Chaudhary and Mayank Jobanputra and Ratnik Gandhi.
+            <em>"SEAS Face Recognition Database for Video"</em>. 2016
+            </p>
+
+          </p>
+
+        </div>
+    </div>
+
+    <div class="footer">
+      __________________________________________________________________________________________________________________________________________________________________
+      <br>
+    This database was developed at
+    <a class="credits" href="http://seas.ahduni.edu.in/"> School of Engineering & Applied Science, Ahmedabad University</a> during the year 2016 <br>by Saumil Shah (131044), Axat Chaudhary (131006) & Mayank Jobanputra (131026).
+    <br>
+    <br>
+    Website Developed By: <a class="cntb" href="http://hellosaumil.github.io/">Saumil Shah</a> Copyright &copy; 2016 hellosaumil. All rights reserved.
+    <br><br>
+    <em>Website is best viewed at 1280x800 resolution</em>
+    <br>
+  </div>
+
+  <script type="text/javascript" src="headhesive.js"></script>
+  <script>
+
+      // Set options
+      var options = {
+          offset: '#showHere',
+          // offset: 10,
+          offsetSide: 'top',
+          classes: {
+              clone:   'banner--clone',
+              stick:   'banner--stick',
+              unstick: 'banner--unstick'
+          }
+      };
+
+      // Initialise with options
+      var banner = new Headhesive('.banner', options);
+
+      // Headhesive destroy
+      // banner.destroy();
+  </script>
+
+  <script type="text/javascript">
+        $(".bg2").interactive_bg({
+          strength: 100,
+          scale: 1.1,
+          contain: false,
+          wrapContent: false
+        });
+
+  </script>
+
+</body>
+
+</html>
