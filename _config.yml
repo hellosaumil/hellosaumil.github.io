@@ -1,7 +1,7 @@
 
 title: All about me
-url: 'http://mayankjobanputra.github.io'
-baseurl: '/mayankjobanputra.github.io' #change it according to your repository name
+url: 'http://hellosaumil.github.io'
+baseurl: '/' #change it according to your repository name
 
 
 # Enable one of these styles by removing #. Style will be applied only after restarting the build or serve.
@@ -18,7 +18,7 @@ tagline: Research Enthusiast
 pic: profile.png  #place a 100x100 picture inside /assets/images/ folder and provide the name of the file below
 
 #sidebar links
-email: mayankjobanputra@gmail.com
+email: hellosaumil@yahoo.com
 phone: 012
 website: blog.webjeda.com #do not add http://
 linkedin: alandoe
