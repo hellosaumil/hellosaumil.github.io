@@ -1,105 +1,14 @@
-<html>
+---
+layout: default
+---
 
-<head>
-<title> Thanks for passing by - Saumil Shah </title>
-<link rel="stylesheet" type="text/css" href="style.css">
-<script src="jquery.min.js"></script>
-<script src="typed.js" type="text/javascript"></script>
-
-
-<script>
-$(function(){
-
-    $("#typed").typed({
-        strings: ["Typed.js is a <strong>jQuery</strong> plugin.", "It <em>types</em> out sentences.", "And then deletes them.", "Try it out!"],
-        stringsElement: $('#typed-strings'),
-        typeSpeed: 30,
-        backDelay: 500,
-        loop: false,
-        contentType: 'html', // or text
-        // defaults to false for infinite loop
-        loopCount: true,
-        callback: function(){ foo(); },
-        // resetCallback: function() { newTyped(); }
-    });
-
-    $(".reset").click(function(){
-
-      $("#typed").typed({
-          strings: ["Typed.js is a <strong>jQuery</strong> plugin.", "It <em>types</em> out sentences.", "And then deletes them.", "Try it out!"],
-          stringsElement: $('#typed-strings'),
-          typeSpeed: 30,
-          backDelay: 500,
-          loop: false,
-          contentType: 'html', // or text
-          // defaults to false for infinite loop
-          loopCount: true,
-          callback: function(){ foo(); },
-          // resetCallback: function() { newTyped(); }
-      });
+            
+{% include career-profile.html %}
+            
+{% include experience.html %}
+            
+{% include projects.html %}
+            
+{% include skills.html %}
 
 
-        // $("#typed").typed('reset');
-    });
-
-});
-
-</script>
-
-
-</head>
-
-<body>
-
-  <header class="Sheader">
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <h1 class="SS">Saumil Shah</h1>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-
-  </header>
-
-    <div class="wrap">
-        <h1 class="h1">Hey, how are you?
-        <a class="reset"> <img src="reload.png"></img> </a>
-        </h1>
-
-        <div class="type-wrap">
-            <div id="typed-strings">
-                <p>Hi, how you doing?</p>
-                <span><strong>Thanks</strong> for passing by...</span>
-                <p>My website is <em>currently</em> under <strong>maintenance</strong>.</p>
-                <p>You can check my <strong>LinkedIn profile</strong> instead!</p>
-            </div>
-            <span id="typed" style="white-space:pre;"></span>
-
-        </div>
-
-        <br>
-        <div class="linksa">
-            <a href="SEAS-FR/index.html">SEAS-Face Recognition Database</a>
-            <a href="https://www.linkedin.com/in/hellosaumil">Saumil Shah on LinkedIn</a>
-        </div>
-    </div>
-
-
-    <div class="footer">
-      ___________________________________________________________________________________
-      <br>
-
-    Copyright &copy; 2016 hellosaumil. All rights reserved.
-    Copyrights <a href="http://hellosaumil.github.io"> hellosaumil.github.io </a>
-  </div>
-
-</body>
-
-</html>
