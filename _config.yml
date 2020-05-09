@@ -13,12 +13,12 @@ baseurl: '/hellosaumil.github.io' #change it according to your repository name
 
 #Profile information
 name: Saumil Shah
-tagline: Research Entusiast with a knack of ICT with Design
+tagline: Research Entusiast in AI/Deep Learning, Speech, Vision and GANs
 pic: profile.jpg  #place a 100x100 picture inside /assets/images/ folder and provide the name of the file below
 
 #sidebar links
-email: hellosaumil@yahoo.com
-phone: +91 9662-4747-82
+email: hellosaumil@gmail.com
+phone: +1 (619)-606-4971
 website: hellosaumil.github.io
 linkedin: hellosaumil
 github: hellosaumil
