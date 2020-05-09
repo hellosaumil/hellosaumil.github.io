@@ -29,3 +29,5 @@ analytics: UA-83979019-1
 
 # Science is what we understand well enough to explain to a computer. Art is everything else we do. - Donald Knuth
 # Everyday life is like programming, I guess. If you love something you can put beauty into it. Donald Knuth
+
+theme: jekyll-theme-minimal
