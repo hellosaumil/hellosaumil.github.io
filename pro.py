@@ -9,7 +9,7 @@
 # }
 
 Skills = {
-    "Programming" : ['Python,', 'C,', 'Java,', 'Swift,', 'Shell Script (Bash),', 'POSIX,', 'MySQL,', 'Embedded C,', 'HTML,', 'CSS,', 'JavaScript,', 'Ajax,', 'jQuery,', 'R'],
+    "Programming" : ['Python', 'C', 'Java', 'Swift', 'Shell Script (Bash)', 'POSIX', 'MySQL', 'Embedded C', 'HTML', 'CSS', 'JavaScript', 'Ajax', 'jQuery', 'R'],
 
     "APIs & Frameworks" : ['TensorFlow', 'Keras', 'PyTorch', 'Scikit-Learn', 'MATLAB', 'Amazon Web Services (AWS) - Elastic Map Reduce (EMR), EC2, S3', 'Apache Spark', 'Pandas', 'Jupyter notebook', 'REST', 'Flask', 'Git', 'Microsoft CNTK', 'CUDA', 'OpenCV', 'Xcode', 'Heroku', 'Materialize']
 }
