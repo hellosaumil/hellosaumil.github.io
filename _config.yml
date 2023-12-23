@@ -4,7 +4,7 @@ baseurl: '/hellosaumil.github.io' #change it according to your repository name
 
 
 # Enable one of these styles by removing #. Style will be applied only after restarting the build or serve.
-#style: styles-2 #teal
+style: styles-2 #teal
 #style: styles-3 #green
 #style: styles-4 #purple
 #style: styles-5 #orange
