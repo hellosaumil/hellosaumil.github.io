@@ -1,12 +1,66 @@
----
-layout: default
----
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; url=/WebResume/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #151515;
+            color: #eeeeee;
+        }
 
-{% include resumes.html %}
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
 
-{% include experience.html %}
+        h1 {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #b5e853;
+            /* Hacker Theme Green */
+        }
 
-{% include projectsX.html %}
+        p {
+            font-weight: 300;
+            color: #abb2bf;
+        }
 
-{% include skills.html %}
+        a {
+            color: #b5e853;
+            text-decoration: none;
+            border-bottom: 1px dashed #b5e853;
+        }
+
+        a:hover {
+            color: #ffffff;
+            border-bottom-style: solid;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Redirecting to WebResume...</h1>
+        <p>If you are not redirected automatically, <a href="/WebResume/">click here</a>.</p>
+    </div>
+    <script>
+        window.location.href = '/WebResume/';
+    </script>
+</body>
+
+</html>
