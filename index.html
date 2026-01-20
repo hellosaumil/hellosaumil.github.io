@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <style>
         body {
             font-family: 'Space Grotesk', sans-serif;
@@ -19,36 +18,26 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background-color: #ffffff;
+            color: #000000;
         }
 
         .container {
             text-align: center;
         }
 
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid white;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
+        h1 {
+            font-weight: 500;
+            margin-bottom: 10px;
         }
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+        p {
+            font-weight: 300;
+            color: #666666;
         }
 
         a {
-            color: white;
+            color: #000000;
             text-decoration: underline;
         }
     </style>
@@ -56,12 +45,10 @@
 
 <body>
     <div class="container">
-        <div class="spinner"></div>
         <h1>Redirecting to WebResume...</h1>
         <p>If you are not redirected automatically, <a href="/WebResume/">click here</a>.</p>
     </div>
     <script>
-        // Fallback JavaScript redirect
         window.location.href = '/WebResume/';
     </script>
 </body>
