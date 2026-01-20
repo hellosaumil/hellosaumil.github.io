@@ -1,16 +1,69 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <defs>
-    <linearGradient id="dolphinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    <!-- Realistic skin gradients -->
+    <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" style="stop-color:#4A6B8A" /> <!-- Darker dorsal -->
+      <stop offset="60%" style="stop-color:#8BA6BC" /> <!-- Mid tones -->
+      <stop offset="100%" style="stop-color:#D9E4EC" /> <!-- Light belly -->
     </linearGradient>
+    
+    <radialGradient id="eyeReflect" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ffffff" />
+      <stop offset="100%" style="stop-color:#000000" />
+    </radialGradient>
+
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1" />
+      <feOffset dx="0.5" dy="0.5" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3" />
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
   </defs>
-  <!-- Dolphin body -->
-  <path d="M10 60 C 20 40, 50 20, 85 45 C 90 50, 85 60, 75 55 C 65 50, 55 45, 45 55 C 35 65, 20 75, 10 60 Z" fill="url(#dolphinGrad)" />
-  <!-- Tail -->
-  <path d="M10 60 C 5 55, 0 65, 5 75 L 15 70 Z" fill="url(#dolphinGrad)" />
-  <!-- Fin -->
-  <path d="M45 35 C 48 25, 55 25, 58 35 L 50 40 Z" fill="url(#dolphinGrad)" />
+
+  <!-- Main Body Silhouette -->
+  <path d="M15 65 
+           Q 10 55, 12 45 
+           Q 25 20, 55 25 
+           Q 85 35, 92 52 
+           C 95 60, 88 65, 82 62
+           Q 65 55, 50 65
+           Q 35 75, 15 65 Z" 
+        fill="url(#bodyGrad)" filter="url(#shadow)" />
+
+  <!-- Dorsal Fin -->
+  <path d="M48 27 
+           Q 55 12, 65 25 
+           L 58 35 Z" 
+        fill="#4A6B8A" />
+
+  <!-- Pectoral Fin -->
+  <path d="M42 58 
+           Q 35 70, 50 75 
+           L 55 65 Z" 
+        fill="#6E8CA6" />
+
+  <!-- Tail Flukes -->
+  <path d="M15 65 
+           Q 5 60, 2 75
+           C 0 80, 8 82, 12 75
+           Q 15 70, 18 75
+           C 22 82, 30 80, 28 75
+           Q 25 60, 15 65 Z" 
+        fill="#4A6B8A" />
+
+  <!-- Snout/Beak Detail -->
+  <path d="M88 50 Q 94 52, 92 56 Q 88 58, 85 54 Z" fill="#6E8CA6" opacity="0.6"/>
+
   <!-- Eye -->
-  <circle cx="78" cy="48" r="2" fill="white" opacity="0.8" />
+  <circle cx="82" cy="48" r="1.5" fill="#1A1A1A" />
+  <circle cx="82.5" cy="47.5" r="0.5" fill="white" />
+
+  <!-- Body Highlights (Glimmer on skin) -->
+  <path d="M45 28 Q 65 35, 80 48" fill="none" stroke="white" stroke-width="0.8" opacity="0.3" stroke-linecap="round" />
+  <path d="M25 45 Q 40 40, 55 45" fill="none" stroke="white" stroke-width="0.5" opacity="0.2" stroke-linecap="round" />
 </svg>
