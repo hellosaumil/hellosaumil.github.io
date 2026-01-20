@@ -1,47 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <defs>
-    <!-- Gradients for realistic lighting -->
-    <linearGradient id="snowInner" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" style="stop-color:#FFFFFF" />
-      <stop offset="100%" style="stop-color:#E3ECFB" />
-    </linearGradient>
-    <linearGradient id="rockSide" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" style="stop-color:#CDA67B" />
-      <stop offset="100%" style="stop-color:#9A7B58" />
-    </linearGradient>
-    <linearGradient id="grassSide" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" style="stop-color:#7CBD3C" />
-      <stop offset="100%" style="stop-color:#2D5A27" />
+    <linearGradient id="dolphinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
     </linearGradient>
   </defs>
-
-  <!-- Main Mountain Body (Shadow/Base) -->
-  <path d="M50 12 L90 85 L10 85 Z" fill="#4A4A4A" />
-
-  <!-- Right Side Rock (Tan/Brown) -->
-  <path d="M50 12 L90 85 L55 85 L50 40 Z" fill="url(#rockSide)" />
-  
-  <!-- Left Side Grass (Green) -->
-  <path d="M50 12 L10 85 L55 85 L50 40 Z" fill="url(#grassSide)" />
-
-  <!-- Detail Bumps/Texture on Slopes -->
-  <path d="M25 70 L35 85 L15 85 Z" fill="#3D7E2B" />
-  <path d="M70 65 L85 85 L60 85 Z" fill="#7E5F3D" />
-
-  <!-- Secondary Peak (Left) -->
-  <path d="M30 40 L45 85 L15 85 Z" fill="url(#grassSide)" />
-  <path d="M30 40 L35 55 L28 58 L24 50 Z" fill="url(#snowInner)" />
-
-  <!-- Main Snow Cap Detail -->
-  <path d="M50 12 
-           L62 35 L58 38 L55 32 L52 40 L48 38 L45 42 L38 32 Z" 
-        fill="url(#snowInner)" />
-
-  <!-- Shadow Accents for Depth -->
-  <path d="M50 12 L55 40 L55 85 L50 85 Z" fill="black" opacity="0.15" />
-  <path d="M30 40 L33 55 L33 85 L30 85 Z" fill="black" opacity="0.1" />
-
-  <!-- High-altitude snow patches -->
-  <path d="M65 50 L68 55 L62 58 Z" fill="#FFFFFF" opacity="0.6" />
-  <path d="M42 60 L45 65 L38 68 Z" fill="#FFFFFF" opacity="0.4" />
+  <!-- Dolphin body -->
+  <path d="M10 60 C 20 40, 50 20, 85 45 C 90 50, 85 60, 75 55 C 65 50, 55 45, 45 55 C 35 65, 20 75, 10 60 Z" fill="url(#dolphinGrad)" />
+  <!-- Tail -->
+  <path d="M10 60 C 5 55, 0 65, 5 75 L 15 70 Z" fill="url(#dolphinGrad)" />
+  <!-- Fin -->
+  <path d="M45 35 C 48 25, 55 25, 58 35 L 50 40 Z" fill="url(#dolphinGrad)" />
+  <!-- Eye -->
+  <circle cx="78" cy="48" r="2" fill="white" opacity="0.8" />
 </svg>
