@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="premiumBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+  </defs>
+  <!-- Sleek unified body shape -->
+  <path d="M15,65 
+           C20,35 45,20 85,45 
+           C92,50 90,60 80,55 
+           C70,50 60,45 50,55 
+           C40,65 25,75 15,65 Z" 
+        fill="url(#premiumBlue)" />
+  <!-- Minimalist Dorsal Fin -->
+  <path d="M48,32 C52,18 62,25 65,35 L55,40 Z" fill="#1E3A8A" />
+  <!-- Minimalist Tail -->
+  <path d="M15,65 C5,60 5,80 15,75 C25,70 15,65 15,65 Z" fill="#1E3A8A" />
+  <!-- Eye -->
+  <circle cx="78" cy="48" r="1.5" fill="white" opacity="0.9" />
+</svg>

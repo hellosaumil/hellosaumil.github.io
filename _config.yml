@@ -1,0 +1,31 @@
+title: Saumil Shah
+url: 'http://hellosaumil.github.io'
+baseurl: '' #change it according to your repository name
+
+
+# Enable one of these styles by removing #. Style will be applied only after restarting the build or serve.
+style: styles-2 #teal
+#style: styles-3 #green
+#style: styles-4 #purple
+#style: styles-5 #orange
+#style: styles-6 #black
+
+
+#Profile information
+name: Saumil Shah
+tagline: Research Entusiast in AI/Deep Learning, Speech, Vision and GANs
+pic: profile.png  #place a 100x100 picture inside /assets/images/ folder and provide the name of the file below
+
+#sidebar links
+email: hellosaumil@gmail.com
+phone: +1 (619)-606-4971
+website: hellosaumil.github.io
+linkedin: hellosaumil
+github: hellosaumil
+
+#Update all the sections by editing the files inside _includes folder.
+
+# Science is what we understand well enough to explain to a computer. Art is everything else we do. - Donald Knuth
+# Everyday life is like programming, I guess. If you love something you can put beauty into it. Donald Knuth
+
+theme: jekyll-theme-minimal
