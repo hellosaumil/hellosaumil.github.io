@@ -1,6 +1,6 @@
 title: Saumil Shah
 url: 'http://hellosaumil.github.io'
-baseurl: '/hellosaumil.github.io' #change it according to your repository name
+baseurl: '' #change it according to your repository name
 
 
 # Enable one of these styles by removing #. Style will be applied only after restarting the build or serve.
