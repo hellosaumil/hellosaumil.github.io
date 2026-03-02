@@ -352,16 +352,23 @@ a:hover {
 .about__photo {
     width: 200px;
     height: 200px;
-    border-radius: 50%;
     object-fit: cover;
     margin: 24px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
     user-select: none;
     -webkit-user-drag: none;
+    -webkit-mask-image: url('../images/shape_mask.svg');
+    mask-image: url('../images/shape_mask.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
 }
 
 [data-theme="dark"] .about__photo {
-    box-shadow: 0 20px 40px rgba(255, 255, 255, 0.12);
+    filter: drop-shadow(0 20px 40px red);
 }
 
 .about__bio {
