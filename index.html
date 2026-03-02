@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saumil Shah</title>
-    <meta name="description" content="Saumil Shah — AI/Deep Learning, Speech & Vision, Generative Models">
+    <meta name="description" content="Saumil Shah — Senior Software Engineer, Infrastructure, AI, Deep Learning">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Forum&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Forum&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css?v=1.0.0">
+    <link rel="stylesheet" href="assets/css/styles.css?v=1.1.0">
 </head>
 
 <body>
@@ -48,7 +48,10 @@
 
     <!-- Hero -->
     <section class="hero" id="hero">
-        <h1 class="hero__name">Saumil Shah</h1>
+        <!-- Pixel animation layers (managed by pixel-hero.js) -->
+        <canvas id="heroCanvas" class="hero__canvas" aria-hidden="true"></canvas>
+
+        <h1 class="hero__name" id="heroName">Saumil Shah</h1>
         <div class="hero__tagline">
             <span id="typed"></span><span class="hero__cursor"></span>
         </div>
@@ -144,7 +147,8 @@
         </div>
     </footer>
 
-    <script src="assets/js/main.js?v=1.0.0"></script>
+    <script src="assets/js/main.js?v=1.1.0"></script>
+    <script src="assets/js/pixel-hero.js?v=1.1.0"></script>
 </body>
 
 </html>
