@@ -1,0 +1,11 @@
+- Hi! 👋
+- thanks for coming to my website! 🙌
+- Senior Software Engineer
+- Infrastructure Engineering
+- Deep Learning
+- Computer Vision
+- Speech Processing
+- Generative Adversarial Networks
+- Machine Learning
+- Data Science
+- Distributed Systems
