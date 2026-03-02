@@ -1,4 +1,5 @@
-- Hi, thanks for coming to my website!
+- Hello! 👋
+- Thanks for coming to my website! 🙌
 - Senior Software Engineer
 - Infrastructure Engineering
 - Deep Learning

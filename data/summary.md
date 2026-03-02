@@ -2,7 +2,7 @@ I'm a **Senior Software Engineer** working as part of the **Graphics Software In
 
 <br><br>
 
-Previously, an **Assistant Researcher** at San Diego State University [SDSU](https://cs.sdsu.edu/) under advisor **[Dr. Marie Roch](https://roch.sdsu.edu)**. Research focus areas involved Unsupervised Learning, Generative Adversarial Networks, and Bio-acoustics domains during my Masters Thesis. The research was conducted at **Marine Acoustics Research Lab** [MAR](https://roch.sdsu.edu/index.php/research-overview) as part of the **Marine Bio-acoustics Research Collaborative** [(MBARCO)](https://acoustics.ucsd.edu) affliated with **Scripps Institution of Oceanography** [(SIO)](https://www.cetus.ucsd.edu/) at [UCSD](https:/cse.ucsd.edu/). This research overcomes challenges in recording whale sounds within noisy underwater environments significantly impacting **marine mammal conservation efforts**.
+Previously, an **Assistant Researcher** at San Diego State University [(SDSU)](https://cs.sdsu.edu/) under the advisor Professor **[Dr. Marie Roch](https://roch.sdsu.edu)**. Research focus areas involved Unsupervised Learning, Generative Adversarial Networks, and Bio-acoustics domains during my Masters Thesis. The research was conducted at **Marine Acoustics Research Lab** [(MAR)](https://roch.sdsu.edu/index.php/research-overview) as part of the **Marine Bio-acoustics Research Collaborative** [(MBARCO)](https://acoustics.ucsd.edu) affliated with **Scripps Institution of Oceanography** [(SIO)](https://www.cetus.ucsd.edu/) at [UCSD](https:/cse.ucsd.edu/). This research overcomes challenges in recording whale sounds within noisy underwater environments significantly impacting **marine mammal conservation efforts**.
 
 
 <br><br>
