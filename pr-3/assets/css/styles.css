@@ -349,12 +349,19 @@ a:hover {
     max-width: 1200px;
 }
 
+.about__photo-wrapper {
+    margin: 24px;
+    filter: drop-shadow(0 0px 50px rgba(0, 0, 0, 0.20));
+}
+
+[data-theme="dark"] .about__photo-wrapper {
+    filter: drop-shadow(0px 0px 50px rgba(255, 255, 255, 0.20));
+}
+
 .about__photo {
     width: 200px;
     height: 200px;
     object-fit: cover;
-    margin: 24px;
-    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
     user-select: none;
     -webkit-user-drag: none;
     -webkit-mask-image: url('../images/shape_mask.svg');
@@ -365,10 +372,6 @@ a:hover {
     mask-repeat: no-repeat;
     -webkit-mask-position: center;
     mask-position: center;
-}
-
-[data-theme="dark"] .about__photo {
-    filter: drop-shadow(0 20px 40px red);
 }
 
 .about__bio {
