@@ -165,12 +165,14 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: border-color 0.2s, color 0.2s;
+    opacity: 0.6;
+    transition: all 0.2s ease;
 }
 
 .theme-toggle:hover {
     border-color: var(--accent);
     color: var(--accent);
+    opacity: 1;
 }
 
 .theme-toggle svg {
@@ -209,6 +211,7 @@ a:hover {
     font-weight: 700;
     letter-spacing: -3px;
     line-height: 1.05;
+    user-select: none;
 }
 
 .hero__tagline {
@@ -220,6 +223,7 @@ a:hover {
     justify-content: center;
     gap: 0;
     min-height: 1.5em;
+    user-select: none;
 }
 
 .hero__cursor {
@@ -262,42 +266,53 @@ a:hover {
     animation: float 2s ease-in-out infinite !important;
 }
 
-.scroll-indicator {
+.scroll-indicator,
+.scroll-up-indicator {
     position: fixed !important;
-    bottom: 40px !important;
-    top: auto !important;
     left: 50% !important;
-    margin-left: -10px !important;
+    transform: translateX(-50%) !important;
     z-index: 99 !important;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent !important;
+    border-radius: 50% !important;
+    transition: all 0.3s ease !important;
+}
+
+.scroll-indicator {
+    bottom: 40px !important;
 }
 
 .scroll-up-indicator {
-    position: fixed !important;
     top: 80px !important;
-    bottom: auto !important;
-    left: 50% !important;
-    margin-left: -10px !important;
-    z-index: 99 !important;
 }
 
 .scroll-indicator:hover,
 .scroll-up-indicator:hover {
-    border: 2px solid var(--accent) !important;
-    border-radius: 50% !important;
-    padding: 8px !important;
-    transition: border-color 0.3s ease !important;
+    border-color: var(--accent) !important;
+    background: rgba(200, 255, 0, 0.05);
 }
 
+.scroll-indicator:hover {
+    transform: translateX(-50%) translateY(4px) !important;
+}
+
+.scroll-up-indicator:hover {
+    transform: translateX(-50%) translateY(-4px) !important;
+}
 
 @keyframes float {
 
     0%,
     100% {
-        transform: translateY(0);
+        transform: translateX(-50%) translateY(0);
     }
 
     50% {
-        transform: translateY(6px);
+        transform: translateX(-50%) translateY(6px);
     }
 }
 
@@ -341,6 +356,8 @@ a:hover {
     object-fit: cover;
     margin: 24px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 [data-theme="dark"] .about__photo {
@@ -380,29 +397,30 @@ a:hover {
     opacity: 0.8;
 }
 
-/* Brand-specific link colors */
-.link-qualcomm {
+/* Brand colors for Bio/Prose (High Specificity) */
+.about__bio a.link-qualcomm {
     color: #3953DC;
 }
 
-.link-snapdragon {
+.about__bio a.link-snapdragon,
+.about__bio a.link-snapdragon code {
     color: #E81B23;
 }
 
-.link-snapdragon code {
-    color: #E81B23;
-}
-
-.link-linkedin {
+.about__bio a.link-linkedin {
     color: #0A66C2;
 }
 
-.link-github {
+.about__bio a.link-github {
     color: #8957e5;
 }
 
-.link-kore {
+.about__bio a.link-kore {
     color: #FF6B35;
+}
+
+.about__bio a.link-webresume {
+    color: #FF6000;
 }
 
 .about__links {
@@ -421,11 +439,12 @@ a:hover {
     font-size: 0.875rem;
     color: var(--accent);
     text-decoration: none;
-    transition: color 0.2s, opacity 0.2s;
+    opacity: 0.6;
+    transition: all 0.3s ease;
 }
 
 .about__link:hover {
-    opacity: 0.8;
+    opacity: 1;
     font-weight: 600;
 }
 
@@ -459,13 +478,45 @@ a:hover {
 }
 
 .project-card {
-    background: transparent;
+    position: relative;
+    background: color-mix(in srgb, var(--bg-card), transparent 50%);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 24px;
     transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
     display: flex;
     flex-direction: column;
+}
+
+.project-card__svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+    /* Allow stroke to slightly overlap if needed */
+}
+
+.project-card__rect {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1px;
+    x: 0;
+    y: 0;
+    width: 100%;
+    height: 100%;
+    rx: 11px;
+    /* Adjusting radius to match inset */
+    ry: 11px;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card:hover .project-card__rect {
+    stroke-dashoffset: 0;
 }
 
 .project-card__footer {
@@ -492,6 +543,7 @@ a:hover {
     padding: 2px 7px;
     white-space: nowrap;
     flex-shrink: 0;
+    user-select: none;
 }
 
 [data-theme="light"] .project-card__year {
@@ -500,7 +552,6 @@ a:hover {
 
 .project-card:hover {
     background: var(--card-bg-hover);
-    border-color: var(--accent);
     transform: translateY(-2px);
 }
 
@@ -509,22 +560,32 @@ a:hover {
     font-weight: 600;
     color: var(--text);
     margin-bottom: 6px;
+    transition: color 0.3s ease;
 }
 
-.project-card__name a {
-    color: inherit;
-    text-decoration: none;
-    background-image: linear-gradient(var(--accent), var(--accent));
-    background-size: 0% 1px;
-    background-repeat: no-repeat;
-    background-position: left bottom;
-    transition: color 0.2s, background-size 0.3s ease;
-}
-
-.project-card__name a:hover,
-.project-card:hover .project-card__name a {
+.project-card:hover .project-card__name {
     color: var(--accent);
-    background-size: 100% 1px;
+}
+
+.project-card__link {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    color: var(--text-muted);
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.project-card__link:hover {
+    color: var(--accent);
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+.project-card__link svg {
+    width: 20px;
+    height: 20px;
 }
 
 .project-card__desc {
@@ -542,6 +603,7 @@ a:hover {
     border-radius: 4px;
     color: var(--accent);
     transition: border-color 0.2s;
+    user-select: none;
 }
 
 .project-card__desc mark {
