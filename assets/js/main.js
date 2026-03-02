@@ -41,6 +41,16 @@ const navObs = new IntersectionObserver(([entry]) => {
 }, { threshold: 0.1 });
 navObs.observe(hero);
 
+/* ── Hero visibility (for pixel-hero.js pause/resume) ── */
+window.__heroInView = true;
+const heroVisObs = new IntersectionObserver(([entry]) => {
+    window.__heroInView = entry.isIntersecting;
+    document.dispatchEvent(new CustomEvent('hero-visibility', {
+        detail: { visible: entry.isIntersecting }
+    }));
+}, { threshold: 0.01 });
+heroVisObs.observe(hero);
+
 /* ── Scroll Indicators (Next & Previous) ── */
 const scrollIndicators = document.querySelectorAll('.scroll-indicator');
 scrollIndicators.forEach(indicator => {
@@ -180,7 +190,17 @@ toggle.addEventListener('click', () => {
             .filter(l => l.startsWith('- '))
             .map(l => l.slice(2).trim())
             .filter(Boolean);
-        if (phrases.length) startTyping(phrases);
+
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reducedMotion) {
+            // No animation — start typing immediately
+            if (phrases.length) startTyping(phrases);
+        } else {
+            // Defer typing until hero animation completes
+            document.addEventListener('hero-animation-done', function () {
+                if (phrases.length) startTyping(phrases);
+            }, { once: true });
+        }
     } catch (e) {
         console.warn('phrases.md:', e);
         startTyping(['AI / Deep Learning', 'GPU Infrastructure', 'Distributed Systems']);
