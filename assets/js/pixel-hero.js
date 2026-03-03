@@ -191,41 +191,32 @@
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        var allDone = true;
-        var resolvedCount = 0;
-        var totalTextCells = 0;
+        var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        var alphaBoost = isLight ? 1.6 : 1.0;
 
         for (var i = 0; i < cells.length; i++) {
             var cell = cells[i];
-            if (cell.isText) totalTextCells++;
 
             if (elapsed < SCRAMBLE_END || (!cell.resolved && elapsed < cell.resolveTime)) {
-                // Still scrambling — show cycling glyphs
-                allDone = false;
                 if (now - cell.lastSwap > 60 + Math.random() * 40) {
                     cell.currentChar = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
                     cell.lastSwap = now;
                 }
-                var flickerAlpha = cell.isText
+                var flickerAlpha = (cell.isText
                     ? 0.3 + Math.sin(now * 0.005 + i) * 0.2
-                    : 0.08 + Math.sin(now * 0.003 + i * 0.5) * 0.06;
+                    : 0.08 + Math.sin(now * 0.003 + i * 0.5) * 0.06) * alphaBoost;
                 ctx.font = largeFont + 'px ' + cell.pixelFont + ', monospace';
                 ctx.fillStyle = 'rgba(' + colorBase + ',' + flickerAlpha.toFixed(3) + ')';
                 ctx.fillText(cell.currentChar, cell.x, cell.y);
 
             } else {
-                // Dissolve phase — fade glyph to transparent
                 if (!cell.resolved) {
                     cell.resolved = true;
                     cell.resolvedAt = now;
                 }
-
                 var dissolveProg = Math.min((now - cell.resolvedAt) / DISSOLVE_DURATION, 1);
-                if (cell.isText) resolvedCount++;
-
                 if (dissolveProg < 1) {
-                    allDone = false;
-                    var fadeAlpha = (1 - dissolveProg) * (cell.isText ? 0.5 : 0.1);
+                    var fadeAlpha = (1 - dissolveProg) * (cell.isText ? 0.5 : 0.1) * alphaBoost;
                     if (fadeAlpha > 0.003) {
                         ctx.font = largeFont + 'px ' + cell.pixelFont + ', monospace';
                         ctx.fillStyle = 'rgba(' + colorBase + ',' + fadeAlpha.toFixed(3) + ')';
@@ -235,20 +226,34 @@
             }
         }
 
-        // Fade in hero text during dissolve window
+        // Fade in hero text during resolve window
         if (heroNameEl && elapsed >= RESOLVE_START) {
             var textProg = Math.min((elapsed - RESOLVE_START) / (RESOLVE_END - RESOLVE_START), 1);
             heroNameEl.style.visibility = 'visible';
             heroNameEl.style.opacity = textProg.toFixed(3);
         }
 
-        if (allDone) {
-            // Scramble complete — start Code Vapors
-            canvas.style.display = 'none';
+        // Trigger Outro as soon as Name is fully solid (Desktop: 4s, Mobile: 2.5s)
+        var stage1Complete = elapsed >= (window.innerWidth <= 480 ? 2500 : RESOLVE_END);
+
+        if (stage1Complete) {
+            // Scramble complete — outro: top-to-bottom clip-path exit
             scrambleAnimating = false;
             heroSection.classList.add('hero--anim-done');
             document.dispatchEvent(new CustomEvent('hero-animation-done'));
-            startCodeVapors();
+
+            canvas.style.transition = 'clip-path 0.8s ease-in, opacity 0.6s ease';
+            canvas.offsetHeight; // force reflow
+            canvas.style.clipPath = 'inset(100% 0 0 0)';
+            canvas.style.opacity = '0';
+
+            setTimeout(function () {
+                canvas.style.display = 'none';
+                canvas.style.clipPath = '';
+                canvas.style.opacity = '';
+                canvas.style.transition = '';
+                startCodeVapors();
+            }, 850);
             return;
         }
 
@@ -261,6 +266,11 @@
     var particles = [];
     var vapDims = { w: 0, h: 0 };
     var vaporsAnimating = false;
+
+    // Wind state (cursor influence on vapors)
+    var windX = 0, windY = 0;
+    var _lastMX = -1, _lastMY = -1;
+    var WIND_DECAY = 0.92;
 
     function getParticleCount() {
         var w = window.innerWidth;
@@ -315,12 +325,12 @@
         }
     }
 
-    function drawShape(p) {
+    function drawShape(p, alpha) {
         var halfSize = p.size * 0.4;
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rotation);
-        ctx.fillStyle = 'rgba(' + colorBase + ',' + p.alpha.toFixed(3) + ')';
+        ctx.fillStyle = 'rgba(' + colorBase + ',' + alpha.toFixed(3) + ')';
 
         if (p.shape === 'square') {
             ctx.fillRect(-halfSize, -halfSize, halfSize * 2, halfSize * 2);
@@ -348,11 +358,22 @@
 
         ctx.clearRect(0, 0, vapDims.w, vapDims.h);
 
+        // Decay wind each frame towards zero
+        windX *= WIND_DECAY;
+        windY *= WIND_DECAY;
+
+        var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        var alphaBoost = isLight ? 1.6 : 1.0;
+
         for (var i = 0; i < particles.length; i++) {
             var p = particles[i];
 
-            // Update
+            // Update — cursor wind steers particle velocity each frame
             p.life++;
+            p.vx += windX * 0.04;
+            p.vy += windY * 0.04;
+            p.vx = Math.max(-1.5, Math.min(1.5, p.vx));
+            p.vy = Math.max(-1.5, Math.min(1.5, p.vy));
             p.x += p.vx;
             p.y += p.vy;
             p.rotation += p.rotationSpeed;
@@ -375,15 +396,16 @@
             }
 
             // Draw
-            if (p.alpha <= 0.001) continue;
+            var displayAlpha = Math.min(p.alpha * alphaBoost, 1);
+            if (displayAlpha <= 0.001) continue;
 
             if (p.shape) {
-                drawShape(p);
+                drawShape(p, displayAlpha);
             } else {
                 ctx.font = p.size + 'px ' + p.pixelFont + ', monospace';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillStyle = 'rgba(' + colorBase + ',' + p.alpha.toFixed(3) + ')';
+                ctx.fillStyle = 'rgba(' + colorBase + ',' + displayAlpha.toFixed(3) + ')';
                 ctx.fillText(p.char, p.x, p.y);
             }
         }
@@ -411,7 +433,11 @@
     document.fonts.ready.then(function () {
         buildGrid();
         startTime = 0;
-        requestAnimationFrame(renderScramble);
+        // Intro: fade the canvas in before starting the scramble loop
+        requestAnimationFrame(function () {
+            canvas.style.opacity = '1';
+            requestAnimationFrame(renderScramble);
+        });
     });
 
     /* ── Debounced resize ── */
@@ -489,6 +515,34 @@
                 particles.length = defaultCount;
             }
         }, 5000);
+    });
+
+    // Cursor velocity → wind for Code Vapors
+    heroSection.addEventListener('mousemove', function (e) {
+        if (!heroSection.classList.contains('hero--anim-done')) return;
+
+        var rect = heroSection.getBoundingClientRect();
+        var mx = e.clientX - rect.left;
+        var my = e.clientY - rect.top;
+
+        if (_lastMX >= 0) {
+            var dx = mx - _lastMX;
+            var dy = my - _lastMY;
+            var len = Math.sqrt(dx * dx + dy * dy);
+            if (len > 0.5) {
+                // Normalize: wind stays in ~[-1,1] regardless of mouse speed
+                windX = windX * 0.6 + (dx / Math.max(len, 10)) * 0.4;
+                windY = windY * 0.6 + (dy / Math.max(len, 10)) * 0.4;
+            }
+        }
+
+        _lastMX = mx;
+        _lastMY = my;
+    });
+
+    heroSection.addEventListener('mouseleave', function () {
+        _lastMX = -1;
+        _lastMY = -1;
     });
 
     // Expose speedMultiplier to renderVapors — patch the update loop
