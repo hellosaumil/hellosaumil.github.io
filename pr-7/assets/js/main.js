@@ -107,6 +107,39 @@ const updateIndicators = () => {
 window.addEventListener('scroll', updateIndicators);
 updateIndicators();
 
+/* ── Arrow Key Section Navigation ── */
+document.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    // Don't hijack if user is typing in an input
+    if (document.activeElement && ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+    const sectionIds = ['hero', 'about', 'projects'];
+    const navH = document.getElementById('nav')?.offsetHeight || 64;
+    const midY = window.scrollY + navH + 4;
+
+    // Find which section is currently "active" (its top is closest to & above midY)
+    let currentIdx = 0;
+    sectionIds.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top + window.scrollY <= midY) {
+            currentIdx = i;
+        }
+    });
+
+    const targetIdx = e.key === 'ArrowDown'
+        ? Math.min(currentIdx + 1, sectionIds.length - 1)
+        : Math.max(currentIdx - 1, 0);
+
+    if (targetIdx === currentIdx) return;
+
+    e.preventDefault();
+    const target = document.getElementById(sectionIds[targetIdx]);
+    if (!target) return;
+
+    const top = target.getBoundingClientRect().top + window.scrollY - navH;
+    window.scrollTo({ top, behavior: 'smooth' });
+});
+
 /* ── Theme Toggle ── */
 const THEME_KEY = 'hellosaumil-portfolio-theme';
 const toggle = document.getElementById('themeToggle');
@@ -245,15 +278,25 @@ toggle.addEventListener('click', () => {
                     const year = yearPart ?? '';
 
                     const descriptionLines = lines.filter(l => l.startsWith('- ')).map(l => l.slice(2).trim());
-                    const desc = descriptionLines.length > 0 ? renderMd(descriptionLines[0]) : '';
-                    const techSnippet = descriptionLines.slice(1).join(' // ').replace(/`/g, '');
+                    const descRaw = descriptionLines.length > 0 ? descriptionLines[0] : '';
+                    const desc = renderMd(descRaw);
 
-                    currentGroup.projects.push({ name, url, tags, year, desc, techSnippet });
+                    // Technical snippet is composed of additional bullets excluding media
+                    const techSnippet = descriptionLines.slice(1)
+                        .filter(l => !l.startsWith('media:'))
+                        .join(' // ').replace(/`/g, '');
+
+                    // Extract media paths
+                    const mediaLine = descriptionLines.find(l => l.startsWith('media: '));
+                    const media = mediaLine ? mediaLine.replace('media: ', '').split(',').map(m => m.trim()) : [];
+
+                    currentGroup.projects.push({ name, url, tags, year, desc, techSnippet, media });
                 }
             }
         });
         if (currentGroup) projectGroups.push(currentGroup);
 
+        // ── Helper: Expand Project In-Place ──
         const githubIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>`;
         const externalIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 01 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>`;
 
@@ -261,32 +304,54 @@ toggle.addEventListener('click', () => {
             const rowClass = group.projects.length <= 2 ? `ed-row--${group.projects.length}` : '';
             const cards = group.projects.map((p, idx) => {
                 const icon = p.url.includes('github.com') ? githubIcon : externalIcon;
+
+                // Prepare gallery HTML
+                const galleryItems = p.media.map(m => {
+                    const isVideo = m.endsWith('.mp4') || m.endsWith('.webm');
+                    return `
+                        <div class="ed-expander__media-item">
+                            ${isVideo ? `<video src="${m}" muted loop playsinline></video>` : `<img src="${m}" alt="${p.name}" loading="lazy">`}
+                        </div>
+                    `;
+                }).join('');
+
+                const hasMedia = p.media.length > 0;
+
                 return `
-                <div class="ed-card">
-                    <div class="ed-card__top">
-                        <a href="${p.url}" class="ed-card__link" target="_blank" rel="noopener" title="Open Project">
-                            ${icon}
-                        </a>
-                        <div class="ed-card__name">${p.name}</div>
-                        <div class="ed-card__desc">${p.desc}</div>
-                    </div>
-                    <div class="ed-card__bottom">
-                        ${p.techSnippet ? `<div class="ed-bottom__tech">${p.techSnippet}</div>` : ''}
-                        <div class="ed-bottom__footer">
-                            <div class="ed-bottom__tags">
-                                ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                <div class="ed-card${hasMedia ? ' has-media' : ''}" data-project-idx="${idx}" data-group-idx="${groupIdx}">
+                    <svg class="ed-card__svg" preserveAspectRatio="none">
+                        <rect class="ed-card__rect" pathLength="1"></rect>
+                    </svg>
+                    <div class="ed-card__main">
+                        <div class="ed-card__top">
+                            <a href="${p.url}" class="ed-card__link" target="_blank" rel="noopener" title="Open Project" onclick="event.stopPropagation()">
+                                ${icon}
+                            </a>
+                            <div class="ed-card__name">${p.name}</div>
+                            <div class="ed-card__desc">${p.desc}</div>
+                        </div>
+                        <div class="ed-card__bottom">
+                            ${p.techSnippet ? `<div class="ed-bottom__tech">${p.techSnippet}</div>` : ''}
+                            <div class="ed-bottom__footer">
+                                <div class="ed-bottom__tags">
+                                    ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                                </div>
+                                <div class="ed-bottom__year">${p.year}</div>
                             </div>
-                            <div class="ed-bottom__year">${p.year}</div>
                         </div>
                     </div>
+                    ${hasMedia ? `
+                    <div class="ed-card__expander">
+                        <div class="ed-expander__gallery">${galleryItems}</div>
+                    </div>` : ''}
                 </div>`;
             }).join('');
 
+            const [mainTitle, subTitle] = group.title.split(' - ');
             return `
             <div class="ed-section">
                 <div class="ed-section__header">
-                    <div class="ed-section__title">${group.title}</div>
-                    <div class="ed-section__count">${group.projects.length} project${group.projects.length === 1 ? '' : 's'}</div>
+                    <div class="ed-section__title">${mainTitle.trim()}${subTitle ? `<span class="ed-section__subtitle">${subTitle.trim()}</span>` : ''}</div>
                 </div>
                 <div class="ed-row ${rowClass}">
                     ${cards}
@@ -295,7 +360,51 @@ toggle.addEventListener('click', () => {
         });
 
         const grid = document.getElementById('projects-grid');
-        if (grid) grid.innerHTML = htmlSections.join('');
+        if (grid) {
+            grid.innerHTML = htmlSections.join('');
+
+            const collapseCard = (card) => {
+                card.classList.remove('is-expanded');
+                card.querySelectorAll('video').forEach(v => v.pause());
+
+                // Scroll back to the parent section header, respecting nav offset
+                const sectionHeader = card.closest('.ed-section')?.querySelector('.ed-section__header');
+                if (sectionHeader) {
+                    const navHeight = document.getElementById('nav')?.offsetHeight || 64;
+                    const top = sectionHeader.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+                    setTimeout(() => window.scrollTo({ top, behavior: 'smooth' }), 50);
+                }
+            };
+
+            grid.querySelectorAll('.ed-card.has-media').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('a')) return;
+
+                    const isExpanded = card.classList.contains('is-expanded');
+
+                    // Collapse any other expanded card
+                    grid.querySelectorAll('.ed-card.is-expanded').forEach(other => {
+                        if (other !== card) collapseCard(other);
+                    });
+
+                    if (isExpanded) {
+                        collapseCard(card);
+                    } else {
+                        card.classList.add('is-expanded');
+                        card.querySelectorAll('video').forEach(v => v.play().catch(() => { }));
+                        setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 350);
+                    }
+                });
+            });
+
+            // Click outside any card collapses the expanded one
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.ed-card')) {
+                    grid.querySelectorAll('.ed-card.is-expanded').forEach(card => collapseCard(card));
+                }
+            });
+
+        }
     } catch (e) { console.warn('projects.md:', e); }
 
 })();
