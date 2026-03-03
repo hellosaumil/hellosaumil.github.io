@@ -1,4 +1,4 @@
-## Vibe-Coded Adventures ✨
+## Vibe-Coded Adventures - Coding for Fun
 
 ---
 ### [JobPostHighlightsExtension](https://github.com/hellosaumil/JobPostHighlightsExtension)
@@ -9,14 +9,16 @@
 ### [WebResume](https://github.com/hellosaumil/WebResume)
 ##### Antigravity, Web Development, Localhost, Github Actions, Version Control | 2026
 - Browser-based `local` resume to load content from `.md` files, `Dark mode`, `Ctrl+P` to Print as PDF for easy to edit, maintain and share.
+- media: assets/images/projects/webresume_1.png
 
 ---
 ### [PocketOrreryXR](https://github.com/hellosaumil/PocketOrreryXR)
 ##### Antigravity, Virtual Reality, glTF, Android XR | 2025
 - Immersive solar system `Android-XR` app with `3D glTF` models with spatial `gestures` and `physics` based planetary mechanics.
+- media: assets/images/projects/pocketorrery_1.jpg
 
 ---
-## Deep Learning & Research 🧐
+## Deep Learning & Research - Building with Purpose
 
 ---
 ### [DeepWhistleGAN](https://drive.google.com/file/d/1vp1WcMvt0eAPQbaeXxriQ5qnka3edRHn/view?usp=sharing)
@@ -44,8 +46,7 @@
 - Job-candidate `recommendation engine` using `NLP` feature extraction and skill-based `ontology` for skill-gap analysis. <u>[Published](https://ieeexplore.ieee.org/document/8369531/)</u> at `IEEE SysCon 2018` Conference.
 
 ---
-## Data Science & Cloud Computing 💾
-
+## Data Science & Cloud Computing - Coursework
 ---
 ### [Agricultural Terrains Classification](https://github.com/hellosaumil/deepsat-aws-emr-pyspark)
 ##### Data Science, PySpark, AWS EMR, AWS S3 | 2020
@@ -57,7 +58,7 @@
 - `WebPy` SaaS for `SPARQL` queries on `OWL/RDF` ontologies with `LRU caching` and `multi-tenant` isolation. Automated `VM load forecasting` via `Linear Regression` for resource balancing with `Xen-API`.
 
 ---
-## SwiftUI Apps 📱
+## SwiftUI Apps - Interactive Experiences
 
 ---
 ### [ToDo iOS App](https://github.com/hellosaumil/ToDo-SwiftUI)
@@ -70,7 +71,7 @@
 - Cars on Demand `iOS` app with `SwiftUI` — a `Zipcar`-style ridesharing clone with fleet management features.
 
 ---
-## Others
+## Others - Miscellaneous
 
 ---
 ### [PenDrive](https://github.com/hellosaumil/PenDrive)
