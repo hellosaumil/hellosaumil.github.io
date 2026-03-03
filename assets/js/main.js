@@ -272,3 +272,62 @@ toggle.addEventListener('click', () => {
     } catch (e) { console.warn('projects.md:', e); }
 
 })();
+
+/* ── Profile photo border: cursor-tracking parallax ── */
+(function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const wrapper = document.getElementById('photoWrapper');
+    const border = document.getElementById('photoBorder');
+    if (!wrapper || !border) return;
+
+    const MAX_SHIFT = 8; // px max offset in each axis
+    let rafId = null;
+    let locked = false; // tap/click to toggle
+
+    const aboutSection = document.getElementById('about');
+
+    function applyShift(x, y) {
+        border.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px)`;
+    }
+
+    function resetBorder() {
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        applyShift(0, 0);
+    }
+
+    aboutSection.addEventListener('mousemove', function (e) {
+        if (locked || rafId) return;
+
+        rafId = requestAnimationFrame(function () {
+            rafId = null;
+
+            const rect = wrapper.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+
+            // Normalized -1 → +1 relative to photo center
+            const normX = Math.max(-1, Math.min(1, (e.clientX - cx) / (rect.width * 1.5)));
+            const normY = Math.max(-1, Math.min(1, (e.clientY - cy) / (rect.height * 1.5)));
+
+            applyShift(normX * MAX_SHIFT, normY * MAX_SHIFT);
+        });
+    });
+
+    aboutSection.addEventListener('mouseleave', function () {
+        if (!locked) resetBorder();
+    });
+
+    // Tap/click anywhere on about section toggles lock
+    aboutSection.addEventListener('click', function () {
+        locked = !locked;
+        wrapper.style.cursor = locked ? 'default' : 'pointer';
+
+        if (locked) resetBorder();
+        // Unlocked: tracking resumes on next mousemove
+    });
+
+    // Hint that the photo area is tappable
+    wrapper.style.cursor = 'pointer';
+})();
+
