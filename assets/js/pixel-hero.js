@@ -86,9 +86,18 @@
             gridH = Math.floor(dims.h / cellSize);
         }
 
-        // Get hero name font size
+        // Get hero name position and font size from actual DOM element
         var computedSize = heroNameEl ? parseFloat(getComputedStyle(heroNameEl).fontSize) : 100;
         var fontFamily = "'Forum', serif";
+        var letterSpacing = heroNameEl ? parseFloat(getComputedStyle(heroNameEl).letterSpacing) || 0 : -3;
+
+        // Get actual position of hero name relative to hero section
+        var heroRect = heroSection.getBoundingClientRect();
+        var nameRect = heroNameEl ? heroNameEl.getBoundingClientRect() : null;
+        var textCenterX = nameRect ? (nameRect.left - heroRect.left + nameRect.width / 2) : dims.w / 2;
+        var textCenterY = nameRect ? (nameRect.top - heroRect.top + nameRect.height / 2) : dims.h / 2;
+        // Correct for canvas textBaseline:'middle' vs CSS box centering
+        textCenterY += computedSize * 0.04;
 
         // Draw text on offscreen canvas to get pixel mask
         var offCanvas = document.createElement('canvas');
@@ -99,7 +108,10 @@
         offCtx.font = '700 ' + computedSize + 'px ' + fontFamily;
         offCtx.textAlign = 'center';
         offCtx.textBaseline = 'middle';
-        offCtx.fillText('Saumil Shah', dims.w / 2, dims.h / 2 - computedSize * 0.08);
+        if (offCtx.letterSpacing !== undefined) {
+            offCtx.letterSpacing = letterSpacing + 'px';
+        }
+        offCtx.fillText('Saumil Shah', textCenterX, textCenterY);
 
         var imgW = Math.floor(dims.w);
         var imgH = Math.floor(dims.h);
@@ -223,28 +235,20 @@
             }
         }
 
-        // Fade in the real hero name proportionally as text cells dissolve
-        if (heroNameEl && totalTextCells > 0) {
-            var revealProg = Math.min(resolvedCount / totalTextCells, 1);
-            if (revealProg > 0) {
-                heroNameEl.style.visibility = 'visible';
-                heroNameEl.style.opacity = revealProg.toFixed(3);
-            }
+        // Fade in hero text during dissolve window
+        if (heroNameEl && elapsed >= RESOLVE_START) {
+            var textProg = Math.min((elapsed - RESOLVE_START) / (RESOLVE_END - RESOLVE_START), 1);
+            heroNameEl.style.visibility = 'visible';
+            heroNameEl.style.opacity = textProg.toFixed(3);
         }
 
         if (allDone) {
-            // Scramble complete — show real text
-            if (heroNameEl) {
-                heroNameEl.style.visibility = 'visible';
-                heroNameEl.style.opacity = '1';
-            }
+            // Scramble complete — start Code Vapors
             canvas.style.display = 'none';
             scrambleAnimating = false;
             heroSection.classList.add('hero--anim-done');
             document.dispatchEvent(new CustomEvent('hero-animation-done'));
-
-            // Delay before starting Code Vapors
-            setTimeout(startCodeVapors, 1000);
+            startCodeVapors();
             return;
         }
 
@@ -393,7 +397,8 @@
         canvas.style.display = 'block';
         canvas.style.clipPath = 'inset(100% 0 0 0)';
         canvas.style.transition = 'clip-path 2.5s ease-out, opacity 2s ease';
-        // Trigger reflow so transition works
+
+        // Trigger reflow to ensure transition starts
         canvas.offsetHeight;
         canvas.style.clipPath = 'inset(0 0 0 0)';
         canvas.style.opacity = '1';

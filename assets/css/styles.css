@@ -89,6 +89,13 @@ a:hover {
     transition: background-color 0.3s, backdrop-filter 0.3s;
 }
 
+.nav.scrolled {
+    background: var(--nav-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+}
+
 .nav__brand {
     display: flex;
     align-items: center;
