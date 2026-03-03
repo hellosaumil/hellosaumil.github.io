@@ -191,17 +191,10 @@
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        var allDone = true;
-        var resolvedCount = 0;
-        var totalTextCells = 0;
-
         for (var i = 0; i < cells.length; i++) {
             var cell = cells[i];
-            if (cell.isText) totalTextCells++;
 
             if (elapsed < SCRAMBLE_END || (!cell.resolved && elapsed < cell.resolveTime)) {
-                // Still scrambling — show cycling glyphs
-                allDone = false;
                 if (now - cell.lastSwap > 60 + Math.random() * 40) {
                     cell.currentChar = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
                     cell.lastSwap = now;
@@ -214,17 +207,12 @@
                 ctx.fillText(cell.currentChar, cell.x, cell.y);
 
             } else {
-                // Dissolve phase — fade glyph to transparent
                 if (!cell.resolved) {
                     cell.resolved = true;
                     cell.resolvedAt = now;
                 }
-
                 var dissolveProg = Math.min((now - cell.resolvedAt) / DISSOLVE_DURATION, 1);
-                if (cell.isText) resolvedCount++;
-
                 if (dissolveProg < 1) {
-                    allDone = false;
                     var fadeAlpha = (1 - dissolveProg) * (cell.isText ? 0.5 : 0.1);
                     if (fadeAlpha > 0.003) {
                         ctx.font = largeFont + 'px ' + cell.pixelFont + ', monospace';
@@ -235,21 +223,24 @@
             }
         }
 
-        // Fade in hero text during dissolve window
+        // Fade in hero text during resolve window
         if (heroNameEl && elapsed >= RESOLVE_START) {
             var textProg = Math.min((elapsed - RESOLVE_START) / (RESOLVE_END - RESOLVE_START), 1);
             heroNameEl.style.visibility = 'visible';
             heroNameEl.style.opacity = textProg.toFixed(3);
         }
 
-        if (allDone) {
+        // Trigger Outro as soon as Name is fully solid (Desktop: 4s, Mobile: 2.5s)
+        var stage1Complete = elapsed >= (window.innerWidth <= 480 ? 2500 : RESOLVE_END);
+
+        if (stage1Complete) {
             // Scramble complete — outro: top-to-bottom clip-path exit
             scrambleAnimating = false;
             heroSection.classList.add('hero--anim-done');
             document.dispatchEvent(new CustomEvent('hero-animation-done'));
 
             canvas.style.transition = 'clip-path 0.8s ease-in, opacity 0.6s ease';
-            canvas.offsetHeight; // force reflow so transition fires
+            canvas.offsetHeight; // force reflow
             canvas.style.clipPath = 'inset(100% 0 0 0)';
             canvas.style.opacity = '0';
 
