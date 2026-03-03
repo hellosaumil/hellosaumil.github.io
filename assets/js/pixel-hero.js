@@ -273,6 +273,11 @@
     var vapDims = { w: 0, h: 0 };
     var vaporsAnimating = false;
 
+    // Wind state (cursor influence on vapors)
+    var windX = 0, windY = 0;
+    var _lastMX = -1, _lastMY = -1;
+    var WIND_DECAY = 0.92;
+
     function getParticleCount() {
         var w = window.innerWidth;
         if (w <= 480) return 40;
@@ -359,11 +364,19 @@
 
         ctx.clearRect(0, 0, vapDims.w, vapDims.h);
 
+        // Decay wind each frame towards zero
+        windX *= WIND_DECAY;
+        windY *= WIND_DECAY;
+
         for (var i = 0; i < particles.length; i++) {
             var p = particles[i];
 
-            // Update
+            // Update — cursor wind steers particle velocity each frame
             p.life++;
+            p.vx += windX * 0.04;
+            p.vy += windY * 0.04;
+            p.vx = Math.max(-1.5, Math.min(1.5, p.vx));
+            p.vy = Math.max(-1.5, Math.min(1.5, p.vy));
             p.x += p.vx;
             p.y += p.vy;
             p.rotation += p.rotationSpeed;
@@ -504,6 +517,34 @@
                 particles.length = defaultCount;
             }
         }, 5000);
+    });
+
+    // Cursor velocity → wind for Code Vapors
+    heroSection.addEventListener('mousemove', function (e) {
+        if (!heroSection.classList.contains('hero--anim-done')) return;
+
+        var rect = heroSection.getBoundingClientRect();
+        var mx = e.clientX - rect.left;
+        var my = e.clientY - rect.top;
+
+        if (_lastMX >= 0) {
+            var dx = mx - _lastMX;
+            var dy = my - _lastMY;
+            var len = Math.sqrt(dx * dx + dy * dy);
+            if (len > 0.5) {
+                // Normalize: wind stays in ~[-1,1] regardless of mouse speed
+                windX = windX * 0.6 + (dx / Math.max(len, 10)) * 0.4;
+                windY = windY * 0.6 + (dy / Math.max(len, 10)) * 0.4;
+            }
+        }
+
+        _lastMX = mx;
+        _lastMY = my;
+    });
+
+    heroSection.addEventListener('mouseleave', function () {
+        _lastMX = -1;
+        _lastMY = -1;
     });
 
     // Expose speedMultiplier to renderVapors — patch the update loop
