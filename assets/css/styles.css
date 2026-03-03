@@ -368,6 +368,8 @@ a:hover {
     display: none;
     pointer-events: none;
     z-index: 0;
+    opacity: 0;
+    transition: opacity 1s ease;
 }
 
 .hero__name,
@@ -422,8 +424,29 @@ a:hover {
 }
 
 .about__photo-wrapper {
-    margin: 24px;
+    position: relative;
+    display: inline-block;
+    margin: 24px auto 40px;
     filter: drop-shadow(0 0px 50px rgba(0, 0, 0, 0.20));
+}
+
+.about__photo-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background-color: var(--accent);
+    -webkit-mask-image: url('../images/shape_mask.svg');
+    mask-image: url('../images/shape_mask.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    z-index: -1;
 }
 
 [data-theme="dark"] .about__photo-wrapper {

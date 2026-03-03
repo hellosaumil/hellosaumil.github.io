@@ -243,12 +243,23 @@
         }
 
         if (allDone) {
-            // Scramble complete — start Code Vapors
-            canvas.style.display = 'none';
+            // Scramble complete — outro: top-to-bottom clip-path exit
             scrambleAnimating = false;
             heroSection.classList.add('hero--anim-done');
             document.dispatchEvent(new CustomEvent('hero-animation-done'));
-            startCodeVapors();
+
+            canvas.style.transition = 'clip-path 0.8s ease-in, opacity 0.6s ease';
+            canvas.offsetHeight; // force reflow so transition fires
+            canvas.style.clipPath = 'inset(100% 0 0 0)';
+            canvas.style.opacity = '0';
+
+            setTimeout(function () {
+                canvas.style.display = 'none';
+                canvas.style.clipPath = '';
+                canvas.style.opacity = '';
+                canvas.style.transition = '';
+                startCodeVapors();
+            }, 850);
             return;
         }
 
@@ -411,7 +422,11 @@
     document.fonts.ready.then(function () {
         buildGrid();
         startTime = 0;
-        requestAnimationFrame(renderScramble);
+        // Intro: fade the canvas in before starting the scramble loop
+        requestAnimationFrame(function () {
+            canvas.style.opacity = '1';
+            requestAnimationFrame(renderScramble);
+        });
     });
 
     /* ── Debounced resize ── */
