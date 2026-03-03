@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    /* Default (Light Mode) - Use the Olive Green from DESIGN.md */
+    .ss-text { fill: #558B2F; }
+    .ss-circle { stroke: #558B2F; }
+
+    /* Dark Mode - Use the Lime Accent from DESIGN.md */
+    @media (prefers-color-scheme: dark) {
+      .ss-text { fill: #C8FF00; }
+      .ss-circle { stroke: #C8FF00; }
+    }
+  </style>
+  <!-- Background circle for visual balance -->
+  <circle class="ss-circle" cx="50" cy="50" r="46" fill="none" stroke-width="4" opacity="0.2" />
+  
+  <!-- Perfectly centered monogram -->
+  <text 
+    x="50" 
+    y="50" 
+    font-family="system-ui, -apple-system, sans-serif" 
+    font-size="52" 
+    font-weight="800" 
+    text-anchor="middle" 
+    dominant-baseline="central"
+    letter-spacing="-3"
+    class="ss-text"
+  >SS</text>
+</svg>
