@@ -430,13 +430,12 @@ a:hover {
     filter: drop-shadow(0 0px 50px rgba(0, 0, 0, 0.20));
 }
 
-.about__photo-wrapper::before {
-    content: '';
+.about__photo-border {
     position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
     background-color: var(--accent);
     -webkit-mask-image: url('../images/shape_mask.svg');
     mask-image: url('../images/shape_mask.svg');
@@ -447,6 +446,8 @@ a:hover {
     -webkit-mask-position: center;
     mask-position: center;
     z-index: -1;
+    transition: transform 0.12s ease-out;
+    will-change: transform;
 }
 
 [data-theme="dark"] .about__photo-wrapper {
