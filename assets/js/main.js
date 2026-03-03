@@ -213,62 +213,89 @@ toggle.addEventListener('click', () => {
         if (bioEl) bioEl.innerHTML = parseMdInline(md.trim());
     } catch (e) { console.warn('summary.md:', e); }
 
-    // ── Load projects.md → project cards ──
+    // ── Load projects.md → Editorial Grid ──
     try {
         const md = await fetchMd('projects.md');
-        const sections = md.split(/\n---\n/).map(s => s.trim()).filter(Boolean);
+        const content = md.split(/\n---\n/).map(s => s.trim()).filter(Boolean);
 
-        const cards = sections.map(section => {
-            const lines = section.split('\n').map(l => l.trim());
+        const projectGroups = [];
+        let currentGroup = null;
 
-            // ### [Name — Subtitle](url)
-            const titleLine = lines.find(l => l.startsWith('###'));
-            const titleMatch = titleLine?.match(/###\s*\[([^\]]+)\]\(([^)]+)\)/);
-            const name = titleMatch
-                ? titleMatch[1].split(/\s*[—–]\s*/)[0].trim()
-                : (titleLine?.replace(/^#+\s*/, '') ?? '');
-            const url = titleMatch?.[2] ?? '#';
+        content.forEach(block => {
+            const lines = block.split('\n').map(l => l.trim());
+            const headerLine = lines.find(l => l.startsWith('## '));
 
-            // ##### *tags* | year
-            const tagLine = lines.find(l => l.startsWith('#####'));
-            const tagRaw = tagLine ? tagLine.replace(/^#+\s*/, '') : '';
-            const [tagsPart, yearPart] = tagRaw.split('|').map(s => s.trim());
-            const tags = tagsPart ? tagsPart.split(',').map(t => t.trim()).filter(Boolean) : [];
-            const year = yearPart ?? '';
+            if (headerLine) {
+                if (currentGroup) projectGroups.push(currentGroup);
+                currentGroup = {
+                    title: headerLine.replace(/^##\s*/, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').trim(),
+                    projects: []
+                };
+            } else if (currentGroup) {
+                const titleLine = lines.find(l => l.startsWith('###'));
+                if (titleLine) {
+                    const titleMatch = titleLine.match(/###\s*\[([^\]]+)\]\(([^)]+)\)/);
+                    const name = titleMatch ? titleMatch[1] : titleLine.replace(/^###\s*/, '');
+                    const url = titleMatch ? titleMatch[2] : '#';
 
-            // First bullet + continuation line → plain-text description
-            const bulletIdx = lines.findIndex(l => l.startsWith('- '));
-            let desc = '';
-            if (bulletIdx !== -1) {
-                desc = renderMd(lines[bulletIdx].slice(2).trim());
-                const next = lines[bulletIdx + 1];
-                if (next && !next.startsWith('-') && !next.startsWith('#') && next.trim()) {
-                    desc += ' ' + renderMd(next.trim());
+                    const tagLine = lines.find(l => l.startsWith('#####'));
+                    const tagRaw = tagLine ? tagLine.replace(/^#####\s*/, '') : '';
+                    const [tagsPart, yearPart] = tagRaw.split('|').map(s => s.trim());
+                    const tags = tagsPart ? tagsPart.split(',').map(t => t.trim()).filter(Boolean) : [];
+                    const year = yearPart ?? '';
+
+                    const descriptionLines = lines.filter(l => l.startsWith('- ')).map(l => l.slice(2).trim());
+                    const desc = descriptionLines.length > 0 ? renderMd(descriptionLines[0]) : '';
+                    const techSnippet = descriptionLines.slice(1).join(' // ').replace(/`/g, '');
+
+                    currentGroup.projects.push({ name, url, tags, year, desc, techSnippet });
                 }
             }
+        });
+        if (currentGroup) projectGroups.push(currentGroup);
 
-            const githubIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>`;
-            const externalIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>`;
-            const icon = url.toLowerCase().includes('github.com') ? githubIcon : externalIcon;
+        const githubIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>`;
+        const externalIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 01 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>`;
 
-            return `<div class="project-card">
-                        <svg class="project-card__svg">
-                            <rect class="project-card__rect" pathLength="1"></rect>
-                        </svg>
-                        <a href="${url}" class="project-card__link" target="_blank" rel="noopener" aria-label="View Project">
+        const htmlSections = projectGroups.map((group, groupIdx) => {
+            const rowClass = group.projects.length <= 2 ? `ed-row--${group.projects.length}` : '';
+            const cards = group.projects.map((p, idx) => {
+                const icon = p.url.includes('github.com') ? githubIcon : externalIcon;
+                return `
+                <div class="ed-card">
+                    <div class="ed-card__top">
+                        <a href="${p.url}" class="ed-card__link" target="_blank" rel="noopener" title="Open Project">
                             ${icon}
                         </a>
-                        <div class="project-card__name">${name}</div>
-                        <div class="project-card__desc">${desc}</div>
-                        <div class="project-card__footer">
-                            <div class="project-card__tags">${tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-                            ${year ? `<span class="project-card__year">${year}</span>` : ''}
+                        <div class="ed-card__name">${p.name}</div>
+                        <div class="ed-card__desc">${p.desc}</div>
+                    </div>
+                    <div class="ed-card__bottom">
+                        ${p.techSnippet ? `<div class="ed-bottom__tech">${p.techSnippet}</div>` : ''}
+                        <div class="ed-bottom__footer">
+                            <div class="ed-bottom__tags">
+                                ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                            </div>
+                            <div class="ed-bottom__year">${p.year}</div>
                         </div>
-                    </div>`;
+                    </div>
+                </div>`;
+            }).join('');
+
+            return `
+            <div class="ed-section">
+                <div class="ed-section__header">
+                    <div class="ed-section__title">${group.title}</div>
+                    <div class="ed-section__count">${group.projects.length} project${group.projects.length === 1 ? '' : 's'}</div>
+                </div>
+                <div class="ed-row ${rowClass}">
+                    ${cards}
+                </div>
+            </div>`;
         });
 
         const grid = document.getElementById('projects-grid');
-        if (grid) grid.innerHTML = cards.join('');
+        if (grid) grid.innerHTML = htmlSections.join('');
     } catch (e) { console.warn('projects.md:', e); }
 
 })();
