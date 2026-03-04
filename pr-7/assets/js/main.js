@@ -51,61 +51,70 @@ const heroVisObs = new IntersectionObserver(([entry]) => {
 }, { threshold: 0.01 });
 heroVisObs.observe(hero);
 
-/* ── Scroll Indicators (Next & Previous) ── */
-const scrollIndicators = document.querySelectorAll('.scroll-indicator');
-scrollIndicators.forEach(indicator => {
-    indicator.style.cursor = 'pointer';
-    indicator.addEventListener('click', () => {
-        const nextId = indicator.getAttribute('data-next');
-        const nextSection = document.getElementById(nextId);
-        if (nextSection) {
-            nextSection.scrollIntoView({ behavior: 'smooth' });
+/* ── Global Scroll Chevrons ── */
+const scrollUpChevron = document.getElementById('scrollUp');
+const scrollDownChevron = document.getElementById('scrollDown');
+const sectionIds = ['hero', 'about', 'projects', 'footer'];
+
+// Get current section index based on scroll position
+const getCurrentSectionIndex = () => {
+    const navH = document.getElementById('nav')?.offsetHeight || 64;
+    const midY = window.scrollY + navH + 4;
+    let currentIdx = 0;
+
+    sectionIds.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top + window.scrollY <= midY) {
+            currentIdx = i;
         }
     });
-});
-
-const scrollUpIndicators = document.querySelectorAll('.scroll-up-indicator');
-scrollUpIndicators.forEach(indicator => {
-    indicator.style.cursor = 'pointer';
-    indicator.addEventListener('click', () => {
-        const prevId = indicator.getAttribute('data-prev');
-        const prevSection = document.getElementById(prevId);
-        if (prevSection) {
-            prevSection.scrollIntoView({ behavior: 'smooth' });
-        }
-    });
-});
-
-// Track scroll and show/hide indicators based on current section
-const updateIndicators = () => {
-    const sections = ['hero', 'about', 'projects', 'footer'];
-    const scrollPos = window.scrollY + window.innerHeight / 2;
-
-    sections.forEach(sectionId => {
-        const el = document.getElementById(sectionId);
-        if (el) {
-            const rect = el.getBoundingClientRect();
-            const isInView = rect.top < window.innerHeight && rect.bottom > 0;
-
-            // Update down indicator
-            const downInd = el.querySelector('.scroll-indicator');
-            if (downInd) {
-                downInd.style.opacity = isInView ? '1' : '0';
-                downInd.style.pointerEvents = isInView ? 'auto' : 'none';
-            }
-
-            // Update up indicator
-            const upInd = el.querySelector('.scroll-up-indicator');
-            if (upInd) {
-                upInd.style.opacity = isInView ? '1' : '0';
-                upInd.style.pointerEvents = isInView ? 'auto' : 'none';
-            }
-        }
-    });
+    return currentIdx;
 };
 
-window.addEventListener('scroll', updateIndicators);
-updateIndicators();
+// Shared navigation function
+const navigateToSection = (direction) => {
+    const currentIdx = getCurrentSectionIndex();
+    let targetIdx;
+
+    if (direction === 'next') {
+        targetIdx = Math.min(currentIdx + 1, sectionIds.length - 1);
+    } else if (direction === 'prev') {
+        targetIdx = Math.max(currentIdx - 1, 0);
+    }
+
+    if (targetIdx === currentIdx) return;
+
+    const targetId = sectionIds[targetIdx];
+    const target = document.getElementById(targetId);
+    if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+    }
+};
+
+// Update global chevron visibility based on current section
+const updateScrollChevrons = () => {
+    const currentIdx = getCurrentSectionIndex();
+    const isAtStart = currentIdx === 0;
+
+    // Hide down chevron as soon as footer is visible in viewport
+    const footer = document.getElementById('footer');
+    const footerVisible = footer && footer.getBoundingClientRect().top < window.innerHeight;
+
+    if (scrollUpChevron) scrollUpChevron.classList.toggle('hidden', isAtStart);
+    if (scrollDownChevron) scrollDownChevron.classList.toggle('hidden', footerVisible);
+};
+
+// Handle chevron clicks
+if (scrollUpChevron) {
+    scrollUpChevron.addEventListener('click', () => navigateToSection('prev'));
+}
+
+if (scrollDownChevron) {
+    scrollDownChevron.addEventListener('click', () => navigateToSection('next'));
+}
+
+window.addEventListener('scroll', updateScrollChevrons);
+updateScrollChevrons();
 
 /* ── Arrow Key Section Navigation ── */
 document.addEventListener('keydown', (e) => {
@@ -113,31 +122,8 @@ document.addEventListener('keydown', (e) => {
     // Don't hijack if user is typing in an input
     if (document.activeElement && ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
 
-    const sectionIds = ['hero', 'about', 'projects'];
-    const navH = document.getElementById('nav')?.offsetHeight || 64;
-    const midY = window.scrollY + navH + 4;
-
-    // Find which section is currently "active" (its top is closest to & above midY)
-    let currentIdx = 0;
-    sectionIds.forEach((id, i) => {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top + window.scrollY <= midY) {
-            currentIdx = i;
-        }
-    });
-
-    const targetIdx = e.key === 'ArrowDown'
-        ? Math.min(currentIdx + 1, sectionIds.length - 1)
-        : Math.max(currentIdx - 1, 0);
-
-    if (targetIdx === currentIdx) return;
-
     e.preventDefault();
-    const target = document.getElementById(sectionIds[targetIdx]);
-    if (!target) return;
-
-    const top = target.getBoundingClientRect().top + window.scrollY - navH;
-    window.scrollTo({ top, behavior: 'smooth' });
+    navigateToSection(e.key === 'ArrowDown' ? 'next' : 'prev');
 });
 
 /* ── Theme Toggle ── */

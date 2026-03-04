@@ -410,36 +410,47 @@ a:hover {
     animation: float 2s ease-in-out infinite !important;
 }
 
-.scroll-indicator,
-.scroll-up-indicator {
-    position: fixed !important;
-    left: 50% !important;
+/* ── Global Scroll Chevrons ── */
+.scroll-chevron {
+    position: fixed;
+    left: 50%;
     transform: translateX(-50%);
-    z-index: 99 !important;
+    z-index: 101;
     width: 36px;
     height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid transparent !important;
-    border-radius: 50% !important;
-    transition: border-color 0.3s ease, background 0.3s ease !important;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    opacity: 1;
+    mix-blend-mode: difference;
 }
 
-.scroll-indicator {
-    bottom: 40px !important;
-    animation: float 2s ease-in-out infinite;
-}
-
-.scroll-up-indicator {
-    top: 80px !important;
+.scroll-chevron--up {
+    top: 80px;
     animation: float-up 2s ease-in-out infinite;
 }
 
-.scroll-indicator:hover,
-.scroll-up-indicator:hover {
-    border-color: var(--accent) !important;
-    background: rgba(200, 255, 0, 0.05);
+.scroll-chevron--down {
+    bottom: 40px;
+    animation: float 2s ease-in-out infinite;
+}
+
+.scroll-chevron.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+[data-theme="light"] .scroll-chevron {
+    mix-blend-mode: normal;
+}
+
+.scroll-chevron svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    color: var(--accent);
 }
 
 @keyframes float {
@@ -530,6 +541,7 @@ a:hover {
 
 /* ── Sections (shared) ── */
 .section {
+    position: relative;
     padding: 120px 0;
     opacity: 0;
     transform: translateY(24px);
@@ -1064,6 +1076,7 @@ a:hover {
 
 /* ── Footer ── */
 .footer {
+    position: relative;
     padding: 48px 0;
     scroll-snap-align: end;
     text-align: center;
