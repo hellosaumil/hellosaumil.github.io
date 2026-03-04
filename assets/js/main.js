@@ -116,15 +116,96 @@ if (scrollDownChevron) {
 window.addEventListener('scroll', updateScrollChevrons);
 updateScrollChevrons();
 
-/* ── Arrow Key Section Navigation ── */
+/* ── Keyboard: section nav + expanded card controls ── */
 document.addEventListener('keydown', (e) => {
-    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
-    // Don't hijack if user is typing in an input
-    if (document.activeElement && ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+    if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
 
+    const expandedCard = document.querySelector('.ed-card.is-expanded');
+
+    // Priority 1: Escape key
+    if (e.key === 'Escape') {
+        // If media modal is open, close it and STOP (don't collapse card)
+        if (mediaModal && mediaModal.isOpen()) {
+            e.preventDefault();
+            mediaModal.close();
+            return;
+        }
+        // Otherwise, if a card is expanded, collapse it
+        if (expandedCard) {
+            e.preventDefault();
+            // Don't use .click() as it might trigger weird side effects, use the collapse helper directly if available
+            // but for now .click() is fine if we're sure it's the card. 
+            // Better: find the card and call the collapseCard function if it was accessible... 
+            // but since it's inside the grid closure, we'll stick to .click() or similar.
+            expandedCard.click();
+            return;
+        }
+    }
+
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
     e.preventDefault();
+
+    // If a card is expanded, cycle through its showcase thumbnails
+    if (expandedCard) {
+        const thumbs = [...expandedCard.querySelectorAll('.ed-expander__thumb')];
+        if (thumbs.length === 0) return;
+
+        const activeIdx = thumbs.findIndex(t => t.classList.contains('is-active'));
+        const nextIdx = e.key === 'ArrowDown'
+            ? (activeIdx + 1) % thumbs.length
+            : (activeIdx - 1 + thumbs.length) % thumbs.length;
+
+        thumbs[nextIdx].click();
+        thumbs[nextIdx].scrollIntoView({ block: 'nearest' });
+        return;
+    }
+
+    // Default: navigate between sections
     navigateToSection(e.key === 'ArrowDown' ? 'next' : 'prev');
 });
+
+/* ── Lightbox Modal ── */
+const mediaModal = (() => {
+    const el = document.createElement('div');
+    el.className = 'media-modal';
+    el.innerHTML = `
+        <div class="media-modal__inner"></div>
+        <button class="media-modal__close" aria-label="Close">Esc [X]</button>
+    `;
+    document.body.appendChild(el);
+
+    const inner = el.querySelector('.media-modal__inner');
+    const closeBtn = el.querySelector('.media-modal__close');
+
+    const open = (src, isVideo) => {
+        inner.innerHTML = isVideo
+            ? `<video src="${src}" muted loop playsinline autoplay controls></video>`
+            : `<img src="${src}" alt="Media preview">`;
+        el.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+    };
+
+    const close = () => {
+        el.classList.remove('is-open');
+        document.body.style.overflow = '';
+        setTimeout(() => { inner.innerHTML = ''; }, 200);
+    };
+
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        close();
+    });
+
+    el.addEventListener('click', (e) => {
+        e.stopPropagation(); // Stop propagation so it doesn't trigger the "click outside card" collapse
+        if (!e.target.closest('img, video')) close();
+    });
+
+    return { open, close, isOpen: () => el.classList.contains('is-open') };
+})();
+
+
+
 
 /* ── Theme Toggle ── */
 const THEME_KEY = 'hellosaumil-portfolio-theme';
@@ -137,7 +218,46 @@ toggle.addEventListener('click', () => {
     const next = current === 'light' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem(THEME_KEY, next);
+    reorderShowcases(next);
 });
+
+// Sort media so theme-matching filenames come first (dark→Dark_Mode first, light→Light_Mode first)
+function sortMediaForTheme(media, theme) {
+    const key = theme === 'light' ? /Light_Mode/i : /Dark_Mode/i;
+    const match = media.filter(m => key.test(m));
+    const rest = media.filter(m => !key.test(m));
+    return [...match, ...rest];
+}
+
+// Re-sort all rendered showcases and swap featured to the new first thumb
+function reorderShowcases(theme) {
+    document.querySelectorAll('.ed-expander__showcase').forEach(showcase => {
+        const thumbsEl = showcase.querySelector('.ed-expander__thumbs');
+        const featured = showcase.querySelector('.ed-expander__featured');
+        if (!thumbsEl || !featured) return;
+
+        const thumbs = [...thumbsEl.querySelectorAll('.ed-expander__thumb')];
+        if (thumbs.length <= 1) return;
+
+        const key = theme === 'light' ? /Light_Mode/i : /Dark_Mode/i;
+        const sorted = [
+            ...thumbs.filter(t => key.test(t.dataset.src)),
+            ...thumbs.filter(t => !key.test(t.dataset.src))
+        ];
+
+        sorted.forEach(t => {
+            t.classList.remove('is-active');
+            thumbsEl.appendChild(t);
+        });
+        sorted[0].classList.add('is-active');
+
+        const src = sorted[0].dataset.src;
+        const isVideo = sorted[0].dataset.isVideo === 'true';
+        featured.innerHTML = isVideo
+            ? `<video src="${src}" muted loop playsinline autoplay></video>`
+            : `<img src="${src}" alt="screenshot" loading="lazy">`;
+    });
+}
 
 /* ── Markdown Loader (mirrors WebResume pattern) ── */
 (async function loadMarkdown() {
@@ -263,18 +383,36 @@ toggle.addEventListener('click', () => {
                     const tags = tagsPart ? tagsPart.split(',').map(t => t.trim()).filter(Boolean) : [];
                     const year = yearPart ?? '';
 
-                    const descriptionLines = lines.filter(l => l.startsWith('- ')).map(l => l.slice(2).trim());
+                    const assetIdx = lines.findIndex(l => l.startsWith('#### assets'));
+
+                    // Description and tech bullets are ONLY those before #### assets
+                    const descriptionLines = (assetIdx >= 0 ? lines.slice(0, assetIdx) : lines)
+                        .filter(l => l.startsWith('- '))
+                        .map(l => l.slice(2).trim());
+
                     const descRaw = descriptionLines.length > 0 ? descriptionLines[0] : '';
                     const desc = renderMd(descRaw);
 
-                    // Technical snippet is composed of additional bullets excluding media
+                    // Technical snippet: additional bullets (after first)
                     const techSnippet = descriptionLines.slice(1)
-                        .filter(l => !l.startsWith('media:'))
                         .join(' // ').replace(/`/g, '');
 
-                    // Extract media paths
-                    const mediaLine = descriptionLines.find(l => l.startsWith('media: '));
-                    const media = mediaLine ? mediaLine.replace('media: ', '').split(',').map(m => m.trim()) : [];
+                    // Extract media paths from #### assets subsection
+                    const mediaRaw = assetIdx >= 0
+                        ? lines.slice(assetIdx + 1)
+                            .filter(l => l.startsWith('- '))
+                            .map(l => l.slice(2).trim())
+                        : [];
+
+                    // Transform GitHub blob URLs to raw URLs so they render in <img> tags
+                    const media = mediaRaw.map(url => {
+                        if (url.includes('github.com') && url.includes('/blob/')) {
+                            return url
+                                .replace('github.com', 'raw.githubusercontent.com')
+                                .replace('/blob/', '/');
+                        }
+                        return url;
+                    });
 
                     currentGroup.projects.push({ name, url, tags, year, desc, techSnippet, media });
                 }
@@ -291,17 +429,35 @@ toggle.addEventListener('click', () => {
             const cards = group.projects.map((p, idx) => {
                 const icon = p.url.includes('github.com') ? githubIcon : externalIcon;
 
-                // Prepare gallery HTML
-                const galleryItems = p.media.map(m => {
-                    const isVideo = m.endsWith('.mp4') || m.endsWith('.webm');
-                    return `
-                        <div class="ed-expander__media-item">
-                            ${isVideo ? `<video src="${m}" muted loop playsinline></video>` : `<img src="${m}" alt="${p.name}" loading="lazy">`}
-                        </div>
-                    `;
-                }).join('');
-
                 const hasMedia = p.media.length > 0;
+                const isSingle = p.media.length === 1;
+                const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+                const sortedMedia = sortMediaForTheme(p.media, currentTheme);
+
+                // Build thumbnail strip HTML
+                const showcaseHtml = hasMedia ? (() => {
+                    const first = sortedMedia[0];
+                    const isFirstVideo = first.endsWith('.mp4') || first.endsWith('.webm');
+                    const featuredEl = isFirstVideo
+                        ? `<video src="${first}" muted loop playsinline></video>`
+                        : `<img src="${first}" alt="${p.name} screenshot" loading="lazy">`;
+
+                    const thumbsHtml = sortedMedia.map((m, i) => {
+                        const isVideo = m.endsWith('.mp4') || m.endsWith('.webm');
+                        const media = isVideo
+                            ? `<video src="${m}" muted playsinline></video>`
+                            : `<img src="${m}" alt="${p.name} thumbnail ${i + 1}" loading="lazy">`;
+                        return `<div class="ed-expander__thumb${i === 0 ? ' is-active' : ''}" data-src="${m}" data-is-video="${isVideo}">${media}</div>`;
+                    }).join('');
+
+                    return `
+                    <div class="ed-card__expander">
+                        <div class="ed-expander__showcase${isSingle ? ' single-asset' : ''}">
+                            <div class="ed-expander__featured">${featuredEl}</div>
+                            <div class="ed-expander__thumbs">${thumbsHtml}</div>
+                        </div>
+                    </div>`;
+                })() : '';
 
                 return `
                 <div class="ed-card${hasMedia ? ' has-media' : ''}" data-project-idx="${idx}" data-group-idx="${groupIdx}">
@@ -326,10 +482,7 @@ toggle.addEventListener('click', () => {
                             </div>
                         </div>
                     </div>
-                    ${hasMedia ? `
-                    <div class="ed-card__expander">
-                        <div class="ed-expander__gallery">${galleryItems}</div>
-                    </div>` : ''}
+                    ${showcaseHtml}
                 </div>`;
             }).join('');
 
@@ -366,6 +519,36 @@ toggle.addEventListener('click', () => {
                 card.addEventListener('click', (e) => {
                     if (e.target.closest('a')) return;
 
+                    // Featured image click: open lightbox modal
+                    if (e.target.closest('.ed-expander__featured')) {
+                        const featured = e.target.closest('.ed-expander__featured');
+                        const media = featured.querySelector('img, video');
+                        if (media) {
+                            const isVideo = media.tagName === 'VIDEO';
+                            mediaModal.open(media.src, isVideo);
+                        }
+                        return;
+                    }
+
+                    // Thumbnail click: swap featured image, don't toggle card
+                    const thumb = e.target.closest('.ed-expander__thumb');
+                    if (thumb) {
+                        const showcase = thumb.closest('.ed-expander__showcase');
+                        const featured = showcase?.querySelector('.ed-expander__featured');
+                        if (!featured) return;
+
+                        const src = thumb.dataset.src;
+                        const isVideo = thumb.dataset.isVideo === 'true';
+
+                        featured.innerHTML = isVideo
+                            ? `<video src="${src}" muted loop playsinline autoplay></video>`
+                            : `<img src="${src}" alt="screenshot" loading="lazy">`;
+
+                        showcase.querySelectorAll('.ed-expander__thumb').forEach(t => t.classList.remove('is-active'));
+                        thumb.classList.add('is-active');
+                        return;
+                    }
+
                     const isExpanded = card.classList.contains('is-expanded');
 
                     // Collapse any other expanded card
@@ -377,7 +560,7 @@ toggle.addEventListener('click', () => {
                         collapseCard(card);
                     } else {
                         card.classList.add('is-expanded');
-                        card.querySelectorAll('video').forEach(v => v.play().catch(() => { }));
+                        card.querySelectorAll('.ed-expander__featured video').forEach(v => v.play().catch(() => { }));
                         setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 350);
                     }
                 });
@@ -385,9 +568,10 @@ toggle.addEventListener('click', () => {
 
             // Click outside any card collapses the expanded one
             document.addEventListener('click', (e) => {
-                if (!e.target.closest('.ed-card')) {
-                    grid.querySelectorAll('.ed-card.is-expanded').forEach(card => collapseCard(card));
-                }
+                // Ignore if clicking a card or the nav (contains theme toggle)
+                if (e.target.closest('.ed-card') || e.target.closest('.nav')) return;
+
+                grid.querySelectorAll('.ed-card.is-expanded').forEach(card => collapseCard(card));
             });
 
         }

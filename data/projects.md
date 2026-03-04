@@ -9,13 +9,23 @@
 ### [WebResume](https://github.com/hellosaumil/WebResume)
 ##### Antigravity, Web Development, Localhost, Github Actions, Version Control | 2026
 - Browser-based `local` resume to load content from `.md` files, `Dark mode`, `Ctrl+P` to Print as PDF for easy to edit, maintain and share.
-- media: assets/images/projects/webresume_1.png
+
+#### assets
+- https://raw.githubusercontent.com/hellosaumil/WebResume/main/docs/assets/Feature_Highlight-Dark_Mode-Demo.png
+- https://raw.githubusercontent.com/hellosaumil/WebResume/main/docs/assets/Feature_Highlight-CSS_Inspector1-Light_Mode-Demo.png
+- https://raw.githubusercontent.com/hellosaumil/WebResume/main/docs/assets/Feature_Highlight-CSS_Inspector2-Light_Mode-Demo.png
+- https://raw.githubusercontent.com/hellosaumil/WebResume/main/docs/assets/Hero-Light_Mode.png
+- https://raw.githubusercontent.com/hellosaumil/WebResume/main/docs/assets/Hero-Dark_Mode.png
 
 ---
 ### [PocketOrreryXR](https://github.com/hellosaumil/PocketOrreryXR)
 ##### Antigravity, Virtual Reality, glTF, Android XR | 2025
 - Immersive solar system `Android-XR` app with `3D glTF` models with spatial `gestures` and `physics` based planetary mechanics.
-- media: assets/images/projects/pocketorrery_1.jpg
+
+#### assets
+- https://raw.githubusercontent.com/hellosaumil/PocketOrreryXR/main/demo/demo_720p.gif
+- https://raw.githubusercontent.com/hellosaumil/PocketOrreryXR/main/demo/Default%20Entry.jpg
+- https://raw.githubusercontent.com/hellosaumil/PocketOrreryXR/main/demo/Solar%20System%20Scaled%20Down%20%2B%20Menu%20Expanded.jpg
 
 ---
 ## Deep Learning & Research - Building with Purpose
@@ -65,6 +75,14 @@
 ##### iOS, SwiftUI, iOS, XCode | 2025
 - Minimal iOS app with `FaceID` auth, `Favorites`, `Search`, and real-time `Widget` sync via `App Groups`. Migrated from `iOS 14` to `iOS 26 (SwiftUI 5)` using `Google Antigravity` and `Claude Opus 4.5`.
 
+#### assets
+- https://raw.githubusercontent.com/hellosaumil/ToDo-SwiftUI/master/demo/ToDoList_original_iOS14.gif
+- https://raw.githubusercontent.com/hellosaumil/ToDo-SwiftUI/master/demo/ToDoList_original_iOS26.gif
+- https://raw.githubusercontent.com/hellosaumil/ToDo-SwiftUI/master/demo/screenshots/iOS14_1.png
+- https://raw.githubusercontent.com/hellosaumil/ToDo-SwiftUI/master/demo/screenshots/iOS14_2.png
+- https://raw.githubusercontent.com/hellosaumil/ToDo-SwiftUI/master/demo/screenshots/iOS26_1.png
+- https://raw.githubusercontent.com/hellosaumil/ToDo-SwiftUI/master/demo/screenshots/iOS26_2.png
+
 ---
 ### [SwiftCar](https://github.com/hellosaumil/SwiftCar)
 ##### iOS, SwiftUI, Ridesharing App | 2020
@@ -78,8 +96,18 @@
 ##### CLI Utility, Shell, Python, Flask, Cloud Storage | 2017
 - One-click `CLI utility` for cloud file sharing — `upload`, `download`, and `copy/paste text` across machines via a `Flask` backend. No flash drive needed.
 
+#### assets
+- assets/images/projects/PenDrive/PenDrive_Website1.png
+- assets/images/projects/PenDrive/PenDrive_Website2.png
+
 ---
 ### [MyErrVisualizer](https://github.com/hellosaumil/MyErrVisualizer)
 ##### Python, Error Handling, Visualization, CLI & Web | 2019
 - `CLI` and `web` utility to visualize Python error tracebacks with improved readability — highlights file, function, line, and error message from cluttered stack traces.
+
+#### assets
+- https://raw.githubusercontent.com/hellosaumil/MyErrVisualizer/master/misc/term-1.png
+- https://raw.githubusercontent.com/hellosaumil/MyErrVisualizer/master/misc/term-2.png
+- https://raw.githubusercontent.com/hellosaumil/MyErrVisualizer/master/misc/myEV-1.png
+- https://raw.githubusercontent.com/hellosaumil/MyErrVisualizer/master/misc/myEV-2.png
 
