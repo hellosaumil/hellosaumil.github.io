@@ -10,9 +10,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Forum&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Forum&family=Google+Sans+Flex:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css?v=1.1.3">
+    <link rel="stylesheet" href="assets/css/styles.css?v=1.2.6">
 </head>
 
 <body>
@@ -55,28 +55,10 @@
         <div class="hero__tagline">
             <span id="typed"></span><span class="hero__cursor"></span>
         </div>
-        <div class="hero__scroll scroll-indicator" data-next="about">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9" />
-            </svg>
-        </div>
     </section>
 
     <!-- About -->
     <section class="section about" id="about">
-        <div class="hero__scroll scroll-up-indicator" data-prev="hero">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="18 15 12 9 6 15" />
-            </svg>
-        </div>
-        <div class="hero__scroll scroll-indicator" data-next="projects">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9" />
-            </svg>
-        </div>
         <div class="container">
             <div class="about__photo-wrapper" id="photoWrapper">
                 <div class="about__photo-border" id="photoBorder"></div>
@@ -123,30 +105,31 @@
 
     <!-- Projects -->
     <section class="section" id="projects">
-        <div class="hero__scroll scroll-up-indicator" data-prev="about">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="18 15 12 9 6 15" />
-            </svg>
-        </div>
         <div class="container">
-            <h2 class="section-heading">Projects</h2>
             <div class="projects__grid" id="projects-grid"></div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer" id="footer">
-        <div class="hero__scroll scroll-up-indicator" data-prev="projects">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="18 15 12 9 6 15" />
-            </svg>
-        </div>
         <div class="container">
             &copy; 2026 Saumil Shah
         </div>
     </footer>
+
+    <!-- Global Scroll Chevrons -->
+    <div class="scroll-chevron scroll-chevron--up" id="scrollUp">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15" />
+        </svg>
+    </div>
+    <div class="scroll-chevron scroll-chevron--down" id="scrollDown">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+        </svg>
+    </div>
 
     <script src="assets/js/main.js?v=1.1.0"></script>
     <script src="assets/js/pixel-hero.js?v=1.1.0"></script>
