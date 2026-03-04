@@ -7,6 +7,11 @@
     box-sizing: border-box;
 }
 
+html,
+body {
+    overscroll-behavior: auto;
+}
+
 /* ── Theme tokens ── */
 :root {
     --bg: #0A0A0A;
@@ -334,7 +339,6 @@ a:hover {
 /* ── Hero ── */
 .hero {
     min-height: 100vh;
-    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1078,7 +1082,6 @@ a:hover {
 .footer {
     position: relative;
     padding: 48px 0;
-    scroll-snap-align: end;
     text-align: center;
     font-family: var(--font-mono);
     font-size: 0.83rem;
