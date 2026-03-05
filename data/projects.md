@@ -46,14 +46,14 @@
 - Real-time HD face recognition via incremental `IPCA+LDA`, reaching `94.67% accuracy` with `34% power savings`. `PyCUDA` GPU acceleration cut training `24%`. <u>[Published](https://doi.org/10.1109/SYSCON.2018.8369529)</u> at `IEEE SysCon 2018` Conference.
 
 ---
-### [SEAS Face Recognition Database](https://github.com/hellosaumil/SEAS-FR-DB)
-##### Face Recognition, Benchmark Dataset, Open-Source, Computer Vision | 2016
-- `Face Recognition Database` for SEAS, Ahmedabad University with benchmark datasets for `face recognition` research in `computer vision` and `machine learning`.
-
----
 ### [Automated Human Capital Management System (AHCM)](https://drive.google.com/drive/folders/0B9gQb-9dKj0uM1h5eWRlRXhpUmc?resourcekey=0--sNi2HxA2uTPENpWuYTB-A&usp=drive_link)
 ##### Recommendation System, NLP, Microservices, Ontology, IEEE Conference Paper | 2017
 - Job-candidate `recommendation engine` using `NLP` feature extraction and skill-based `ontology` for skill-gap analysis. <u>[Published](https://ieeexplore.ieee.org/document/8369531/)</u> at `IEEE SysCon 2018` Conference.
+
+---
+### [SEAS Face Recognition Database](https://github.com/hellosaumil/SEAS-FR-DB)
+##### Face Recognition, Benchmark Dataset, Open-Source, Computer Vision | 2016
+- `Face Recognition Database` for SEAS, Ahmedabad University with benchmark datasets for `face recognition` research in `computer vision` and `machine learning`.
 
 ---
 ## Data Science & Cloud Computing - Coursework
@@ -92,15 +92,6 @@
 ## Others - Miscellaneous
 
 ---
-### [PenDrive](https://github.com/hellosaumil/PenDrive)
-##### CLI Utility, Shell, Python, Flask, Cloud Storage | 2017
-- One-click `CLI utility` for cloud file sharing — `upload`, `download`, and `copy/paste text` across machines via a `Flask` backend. No flash drive needed.
-
-#### assets
-- assets/images/projects/PenDrive/PenDrive_Website1.png
-- assets/images/projects/PenDrive/PenDrive_Website2.png
-
----
 ### [MyErrVisualizer](https://github.com/hellosaumil/MyErrVisualizer)
 ##### Python, Error Handling, Visualization, CLI & Web | 2019
 - `CLI` and `web` utility to visualize Python error tracebacks with improved readability — highlights file, function, line, and error message from cluttered stack traces.
@@ -111,3 +102,11 @@
 - https://raw.githubusercontent.com/hellosaumil/MyErrVisualizer/master/misc/myEV-1.png
 - https://raw.githubusercontent.com/hellosaumil/MyErrVisualizer/master/misc/myEV-2.png
 
+---
+### [PenDrive](https://github.com/hellosaumil/PenDrive)
+##### CLI Utility, Shell, Python, Flask, Cloud Storage | 2017
+- One-click `CLI utility` for cloud file sharing — `upload`, `download`, and `copy/paste text` across machines via a `Flask` backend. No flash drive needed.
+
+#### assets
+- assets/images/projects/PenDrive/PenDrive_Website1.png
+- assets/images/projects/PenDrive/PenDrive_Website2.png
