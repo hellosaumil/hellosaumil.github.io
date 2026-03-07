@@ -38,10 +38,10 @@
 
 ---
 ### [DeepWhistleGAN](https://drive.google.com/file/d/1vp1WcMvt0eAPQbaeXxriQ5qnka3edRHn/view?usp=sharing)
-##### Masters Thesis, Unsupervised Learning, Synthetic Data, Speech Processing, Computer Vision, GANs, PyTorch | 2020
+##### Masters Thesis, Unsupervised Learning, GANs, Speech, Computer Vision, PyTorch | 2020
 
 #### Info
-- Designed `Generative Adversarial Networks` based hybrid architecture (80.5% F1) using `WGAN+CycleGAN` for `10x synthetic data` augmentation in marine bio-acoustics. "[Learning to Detect Odontocete Whistles from Generative Synthetic Samples](https://csu-sdsu.primo.exlibrisgroup.com/permalink/01CALS_SDL/10r4g1c/cdi_proquest_journals_2493456813)"
+- **Thesis Title: "[Learning to Detect Odontocete Whistles from Generative Synthetic Samples](https://csu-sdsu.primo.exlibrisgroup.com/permalink/01CALS_SDL/10r4g1c/cdi_proquest_journals_2493456813)"**.<br>Designed `Generative Adversarial Networks` based hybrid architecture `(80.5% F1)` using `WGAN+CycleGAN` for `10x synthetic data` in marine bio-acoustics.
 
 
 #### Details
@@ -67,10 +67,15 @@
 
 ---
 ### [GPU-Accelerated Face Recognition & Tracking](https://drive.google.com/open?id=0B9gQb-9dKj0ubWVWWjFLQWJqRnM)
-##### Incremental Machine Learning, Skip-Frames, OpenCV, PyCUDA, IEEE Conference Paper | 2017
+##### Incremental Machine Learning, Skip-Frames, OpenCV, PyCUDA, GPGPUs, IEEE Paper | 2017
 
 #### Info
-- Real-time HD face recognition via incremental `IPCA+LDA`, reaching `94.67% accuracy` with `34% power savings`. `PyCUDA` GPU acceleration cut training `24%`. <u>[Published](https://doi.org/10.1109/SYSCON.2018.8369529)</u> at `IEEE SysCon 2018` Conference.
+- Real-time HD face recognition via incremental `IPCA+LDA`, reaching `94.67% accuracy` with `34% power savings`. `PyCUDA` GPU acceleration cut training `24%`. <u>[Published](https://doi.org/10.1109/SYSCON.2018.8369529)</u> at `IEEE SysCon 2018` Conference & [NVIDIA Acadmic Seeding GPU Grant](https://www.nvidia.com/en-us/industries/higher-education-research/academic-grant-program) recipient.
+
+#### Details
+- **Paper**: **["Real-time face recognition in HD videos: Algorithms and framework"](https://ieeexplore.ieee.org/document/8369529)** at 2018 Annual IEEE International Systems Conference (SysCon), Vancouver, BC, Canada, 2018, pp. 1-8, [doi: 10.1109/SYSCON.2018.8369529](https://ieeexplore.ieee.org/document/8369529).
+- **Grant**: Received `Nvidia Quadro P5000` [GPU Academic Seeding Grant](https://www.nvidia.com/en-us/industries/higher-education-research/academic-grant-program) in Sep 2017.
+
 
 #### assets
 - <iframe src="https://drive.google.com/file/d/1yoS9IF6sItCEq_goqQKwLHnm_NISH5a1/preview" width="640" height="480"></iframe>
@@ -78,11 +83,14 @@
 - <iframe src="https://drive.google.com/file/d/0B9gQb-9dKj0uYzZQdFNYRFZEck0/preview?resourcekey=0-Dwhko5UX2ScKQl1WCiSABQ" width="640" height="480"></iframe>
 
 ---
-### [Automated Human Capital Management System (AHCM)](https://drive.google.com/drive/folders/0B9gQb-9dKj0uM1h5eWRlRXhpUmc?resourcekey=0--sNi2HxA2uTPENpWuYTB-A&usp=drive_link)
-##### Recommendation System, NLP, Microservices, Ontology, IEEE Conference Paper | 2017
+### [Automated Human Capital Management System](https://drive.google.com/drive/folders/0B9gQb-9dKj0uM1h5eWRlRXhpUmc?resourcekey=0--sNi2HxA2uTPENpWuYTB-A&usp=drive_link)
+##### Bachelors Capstone, NLP, Microservices, Recommendation System, IEEE Paper | 2017
 
 #### Info
-- Job-candidate `recommendation engine` using `NLP` feature extraction and skill-based `ontology` for skill-gap analysis. <u>[Published](https://ieeexplore.ieee.org/document/8369531/)</u> at `IEEE SysCon 2018` Conference.
+- Job-candidate `recommendation engine` using `NLP` feature extraction and skill-based `ontology` for skill-gap analysis. <u>[Published](https://ieeexplore.ieee.org/document/8369531)</u> at `IEEE SysCon 2018` Conference.
+
+#### Details
+- **Paper**: **["Automated human capital management system"](https://ieeexplore.ieee.org/document/8369531)** at 2018 Annual IEEE International Systems Conference (SysCon), Vancouver, BC, Canada, 2018, pp. 1-8, [doi: 10.1109/SYSCON.2018](https://ieeexplore.ieee.org/document/8369531).
 
 #### assets
 - <iframe src="https://drive.google.com/file/d/1k6_UxoUIKevb8NQ7_BCsoZb1M8Ld-gyi/preview" width="640" height="480"></iframe>
@@ -93,7 +101,11 @@
 ##### Face Recognition, Benchmark Dataset, Open-Source, Computer Vision | 2016
 
 #### Info
-- `Face Recognition Database` for SEAS, Ahmedabad University with benchmark datasets for `face recognition` research in `computer vision` and `machine learning`.
+- `Face Recognition Database` for SEAS, Ahmedabad University with benchmark datasets for `face recognition` research in `computer vision` and `machine learning`. <u>[Published](https://doi.org/10.1109/SYSCON.2018.8369529)</u> at `IEEE SysCon 2018` Conference & [NVIDIA Acadmic Seeding GPU Grant](https://www.nvidia.com/en-us/industries/higher-education-research/academic-grant-program) recipient.
+
+#### Details
+- **Paper**: **["Real-time face recognition in HD videos: Algorithms and framework"](https://ieeexplore.ieee.org/document/8369529)** at 2018 Annual IEEE International Systems Conference (SysCon), Vancouver, BC, Canada, 2018, pp. 1-8, [doi: 10.1109/SYSCON.2018.8369529](https://ieeexplore.ieee.org/document/8369529).
+- **Grant**: Received `Nvidia Quadro P5000` [GPU Academic Seeding Grant](https://www.nvidia.com/en-us/industries/higher-education-research/academic-grant-program/) in Sep 2017.
 
 #### assets
 - <iframe src="https://drive.google.com/file/d/1yoS9IF6sItCEq_goqQKwLHnm_NISH5a1/preview" width="640" height="480"></iframe>

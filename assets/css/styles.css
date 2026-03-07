@@ -1119,6 +1119,18 @@ a:hover {
     position: relative;
 }
 
+@keyframes pulsate {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+}
+
 .ed-card__link {
     position: absolute;
     top: 20px;
@@ -1130,14 +1142,11 @@ a:hover {
     display: flex;
 }
 
-.ed-card__link:hover,
-.ed-card:hover .ed-card__link {
+.ed-card:hover .ed-card__link,
+.ed-card__link:hover {
     color: var(--accent);
     opacity: 1;
-}
-
-.ed-card__link:hover {
-    transform: scale(1.1);
+    animation: pulsate 2s ease-in-out infinite;
 }
 
 
