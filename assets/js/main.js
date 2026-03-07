@@ -229,6 +229,32 @@ function sortMediaForTheme(media, theme) {
     return [...match, ...rest];
 }
 
+// Populate featured with actual media (img/video/iframe HTML)
+function populateFeaturedMedia(featured, src, isVideo, isIframe) {
+    featured.classList.add('is-loading');
+    const html = isIframe
+        ? decodeURIComponent(src)
+        : isVideo
+            ? `<video src="${src}" muted loop playsinline autoplay></video>`
+            : `<img src="${src}" alt="screenshot" loading="lazy">`;
+    featured.innerHTML = html;
+    attachFeaturedLoadListener(featured);
+}
+
+// Remove is-loading from a featured div once its media asset has loaded
+function attachFeaturedLoadListener(featured) {
+    const media = featured.querySelector('img, video, iframe');
+    if (!media) { featured.classList.remove('is-loading'); return; }
+    const done = () => featured.classList.remove('is-loading');
+    if (media.tagName === 'IMG') {
+        media.complete && media.naturalWidth > 0 ? done() : media.addEventListener('load', done, { once: true });
+    } else if (media.tagName === 'VIDEO') {
+        media.readyState >= 2 ? done() : media.addEventListener('loadeddata', done, { once: true });
+    } else {
+        media.addEventListener('load', done, { once: true });
+    }
+}
+
 // Re-sort all rendered showcases and swap featured to the new first thumb
 function reorderShowcases(theme) {
     document.querySelectorAll('.ed-expander__showcase').forEach(showcase => {
@@ -253,9 +279,11 @@ function reorderShowcases(theme) {
 
         const src = sorted[0].dataset.src;
         const isVideo = sorted[0].dataset.isVideo === 'true';
-        featured.innerHTML = isVideo
-            ? `<video src="${src}" muted loop playsinline autoplay></video>`
-            : `<img src="${src}" alt="screenshot" loading="lazy">`;
+        const isIframe = sorted[0].dataset.isIframe === 'true';
+        // Don't reload iframes when theme changes (they don't depend on our theme)
+        if (!isIframe) {
+            populateFeaturedMedia(featured, src, isVideo, isIframe);
+        }
     });
 }
 
@@ -384,18 +412,49 @@ function reorderShowcases(theme) {
                     const year = yearPart ?? '';
 
                     const assetIdx = lines.findIndex(l => l.startsWith('#### assets'));
+                    const infoIdx = lines.findIndex(l => l.startsWith('#### Info'));
+                    const detailsIdx = lines.findIndex(l => l.startsWith('#### Details'));
 
-                    // Description and tech bullets are ONLY those before #### assets
-                    const descriptionLines = (assetIdx >= 0 ? lines.slice(0, assetIdx) : lines)
-                        .filter(l => l.startsWith('- '))
-                        .map(l => l.slice(2).trim());
+                    // Extract Info section (shown when collapsed)
+                    let infoLines = [];
+                    if (infoIdx >= 0) {
+                        const endIdx = Math.min(
+                            ...[detailsIdx, assetIdx, lines.length]
+                                .filter(i => i > infoIdx && i >= 0)
+                        );
+                        infoLines = lines.slice(infoIdx + 1, endIdx)
+                            .filter(l => l.startsWith('- '))
+                            .map(l => l.slice(2).trim());
+                    }
 
-                    const descRaw = descriptionLines.length > 0 ? descriptionLines[0] : '';
+                    // Extract Details section (shown when expanded)
+                    let detailsLines = [];
+                    if (detailsIdx >= 0) {
+                        const endIdx = Math.min(
+                            ...[assetIdx, lines.length]
+                                .filter(i => i > detailsIdx && i >= 0)
+                        );
+                        detailsLines = lines.slice(detailsIdx + 1, endIdx)
+                            .filter(l => l.startsWith('- '))
+                            .map(l => l.slice(2).trim());
+                    }
+
+                    // Description and tech: use Info if available, else fallback to first bullets
+                    let descRaw = '';
+                    let techSnippet = '';
+                    if (infoLines.length > 0) {
+                        descRaw = infoLines[0];
+                        techSnippet = infoLines.slice(1).join(' // ').replace(/`/g, '');
+                    } else {
+                        // Fallback: collect bullets before #### assets (old format)
+                        const descriptionLines = (assetIdx >= 0 ? lines.slice(0, assetIdx) : lines)
+                            .filter(l => l.startsWith('- '))
+                            .map(l => l.slice(2).trim());
+                        descRaw = descriptionLines.length > 0 ? descriptionLines[0] : '';
+                        techSnippet = descriptionLines.slice(1).join(' // ').replace(/`/g, '');
+                    }
+
                     const desc = renderMd(descRaw);
-
-                    // Technical snippet: additional bullets (after first)
-                    const techSnippet = descriptionLines.slice(1)
-                        .join(' // ').replace(/`/g, '');
 
                     // Extract media paths from #### assets subsection
                     const mediaRaw = assetIdx >= 0
@@ -414,7 +473,7 @@ function reorderShowcases(theme) {
                         return url;
                     });
 
-                    currentGroup.projects.push({ name, url, tags, year, desc, techSnippet, media });
+                    currentGroup.projects.push({ name, url, tags, year, desc, techSnippet, media, details: detailsLines });
                 }
             }
         });
@@ -434,26 +493,25 @@ function reorderShowcases(theme) {
                 const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
                 const sortedMedia = sortMediaForTheme(p.media, currentTheme);
 
-                // Build thumbnail strip HTML
+                // Build thumbnail strip HTML with lazy-loaded assets
                 const showcaseHtml = hasMedia ? (() => {
-                    const first = sortedMedia[0];
-                    const isFirstVideo = first.endsWith('.mp4') || first.endsWith('.webm');
-                    const featuredEl = isFirstVideo
-                        ? `<video src="${first}" muted loop playsinline></video>`
-                        : `<img src="${first}" alt="${p.name} screenshot" loading="lazy">`;
+                    const iframePlaceholder = `<div class="ed-thumb-iframe-placeholder"><svg viewBox="0 0 24 24" width="24" height="24"><rect x="2" y="3" width="20" height="14" fill="none" stroke="currentColor" stroke-width="1.5" rx="1"/><line x1="2" y1="17" x2="22" y2="17" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg><span>PREVIEW</span></div>`;
+                    const emptyPlaceholder = `<div class="ed-asset-placeholder"></div>`;
 
+                    // Thumbnails: always show placeholders (will be populated on expand)
                     const thumbsHtml = sortedMedia.map((m, i) => {
-                        const isVideo = m.endsWith('.mp4') || m.endsWith('.webm');
-                        const media = isVideo
-                            ? `<video src="${m}" muted playsinline></video>`
-                            : `<img src="${m}" alt="${p.name} thumbnail ${i + 1}" loading="lazy">`;
-                        return `<div class="ed-expander__thumb${i === 0 ? ' is-active' : ''}" data-src="${m}" data-is-video="${isVideo}">${media}</div>`;
+                        const isIframe = m.startsWith('<iframe');
+                        const isVideo = !isIframe && (m.endsWith('.mp4') || m.endsWith('.webm'));
+                        const thumbContent = isIframe ? iframePlaceholder : emptyPlaceholder;
+                        const dataSrc = isIframe ? encodeURIComponent(m) : m;
+                        return `<div class="ed-expander__thumb${i === 0 ? ' is-active' : ''}" data-src="${dataSrc}" data-is-video="${isVideo}" data-is-iframe="${isIframe}">${thumbContent}</div>`;
                     }).join('');
 
+                    // Featured: empty initially, will be populated on expand
                     return `
-                    <div class="ed-card__expander">
+                    <div class="ed-card__expander" data-media='${JSON.stringify(sortedMedia)}'>
                         <div class="ed-expander__showcase${isSingle ? ' single-asset' : ''}">
-                            <div class="ed-expander__featured">${featuredEl}</div>
+                            <div class="ed-expander__featured is-loading">${emptyPlaceholder}</div>
                             <div class="ed-expander__thumbs">${thumbsHtml}</div>
                         </div>
                     </div>`;
@@ -470,7 +528,10 @@ function reorderShowcases(theme) {
                                 ${icon}
                             </a>
                             <div class="ed-card__name">${p.name}</div>
-                            <div class="ed-card__desc">${p.desc}</div>
+                            <div class="ed-card__desc">
+                                <div class="ed-card__desc__info">${p.desc}</div>
+                                ${p.details && p.details.length > 0 ? `<div class="ed-card__desc__details"><ul>${p.details.map(d => `<li>${renderMd(d)}</li>`).join('')}</ul></div>` : ''}
+                            </div>
                         </div>
                         <div class="ed-card__bottom">
                             ${p.techSnippet ? `<div class="ed-bottom__tech">${p.techSnippet}</div>` : ''}
@@ -539,10 +600,8 @@ function reorderShowcases(theme) {
 
                         const src = thumb.dataset.src;
                         const isVideo = thumb.dataset.isVideo === 'true';
-
-                        featured.innerHTML = isVideo
-                            ? `<video src="${src}" muted loop playsinline autoplay></video>`
-                            : `<img src="${src}" alt="screenshot" loading="lazy">`;
+                        const isIframe = thumb.dataset.isIframe === 'true';
+                        populateFeaturedMedia(featured, src, isVideo, isIframe);
 
                         showcase.querySelectorAll('.ed-expander__thumb').forEach(t => t.classList.remove('is-active'));
                         thumb.classList.add('is-active');
@@ -560,6 +619,34 @@ function reorderShowcases(theme) {
                         collapseCard(card);
                     } else {
                         card.classList.add('is-expanded');
+                        // Lazy-load featured & thumbnail media on expand
+                        const expander = card.querySelector('.ed-card__expander');
+                        const featured = expander?.querySelector('.ed-expander__featured');
+                        if (expander && featured) {
+                            const mediaStr = expander.dataset.media;
+                            if (mediaStr && !featured.querySelector('img, video, iframe')) {
+                                const sortedMedia = JSON.parse(mediaStr);
+                                const first = sortedMedia[0];
+                                const isFirstIframe = first.startsWith('<iframe');
+                                const isFirstVideo = !isFirstIframe && (first.endsWith('.mp4') || first.endsWith('.webm'));
+                                populateFeaturedMedia(featured, first, isFirstVideo, isFirstIframe);
+                            }
+                            // Also populate thumbnail images on expand
+                            expander.querySelectorAll('.ed-expander__thumb').forEach((thumb, i) => {
+                                const thumbImg = thumb.querySelector('img, video');
+                                if (!thumbImg) {
+                                    const src = thumb.dataset.src;
+                                    const isVideo = thumb.dataset.isVideo === 'true';
+                                    const isIframe = thumb.dataset.isIframe === 'true';
+                                    const html = isIframe
+                                        ? `<div class="ed-thumb-iframe-placeholder"><svg viewBox="0 0 24 24" width="24" height="24"><rect x="2" y="3" width="20" height="14" fill="none" stroke="currentColor" stroke-width="1.5" rx="1"/><line x1="2" y1="17" x2="22" y2="17" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg><span>PREVIEW</span></div>`
+                                        : isVideo
+                                            ? `<video src="${src}" muted playsinline></video>`
+                                            : `<img src="${src}" alt="thumbnail ${i + 1}" loading="lazy">`;
+                                    thumb.innerHTML = html;
+                                }
+                            });
+                        }
                         card.querySelectorAll('.ed-expander__featured video').forEach(v => v.play().catch(() => { }));
                         setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 350);
                     }
