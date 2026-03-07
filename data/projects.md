@@ -56,7 +56,7 @@
 
 ---
 ### [Phoneme Recognition & Digit Identification](https://drive.google.com/drive/folders/1C59f-HTYvSWZ5iUEIMvxXTJogwpAaULU?usp=sharing)
-##### Recurrent Neural Networks, LSTM, Speech Processing, TensorFlow, AWS EC2 | 2019
+##### Recurrent Neural Networks, LSTM, Speech Processing, TensorFlow, AWS EC2 | 2018
 
 #### Info
 - End-to-end `RNN pipeline` for phoneme recognition on `TIMIT`/`TIDIGITS`, achieving `~64% accuracy`. Scaled training on `AWS EC2`, cutting epoch time `99%` from `2.75 hrs` to `~45s`.
@@ -67,19 +67,16 @@
 
 ---
 ### [GPU-Accelerated Face Recognition & Tracking](https://drive.google.com/open?id=0B9gQb-9dKj0ubWVWWjFLQWJqRnM)
-##### Incremental Machine Learning, Skip-Frames, OpenCV, PyCUDA, IEEE Conference Paper | 2018
+##### Incremental Machine Learning, Skip-Frames, OpenCV, PyCUDA, IEEE Conference Paper | 2017
 
 #### Info
 - Real-time HD face recognition via incremental `IPCA+LDA`, reaching `94.67% accuracy` with `34% power savings`. `PyCUDA` GPU acceleration cut training `24%`. <u>[Published](https://doi.org/10.1109/SYSCON.2018.8369529)</u> at `IEEE SysCon 2018` Conference.
 
-<<<<<<< HEAD
-=======
 #### assets
 - <iframe src="https://drive.google.com/file/d/1yoS9IF6sItCEq_goqQKwLHnm_NISH5a1/preview" width="640" height="480"></iframe>
 - <iframe src="https://drive.google.com/file/d/1bV5dw0S_5MeRh_sQ-zO32HMnVkWYXNIg/preview" width="640" height="480"></iframe>
 - <iframe src="https://drive.google.com/file/d/0B9gQb-9dKj0uYzZQdFNYRFZEck0/preview?resourcekey=0-Dwhko5UX2ScKQl1WCiSABQ" width="640" height="480"></iframe>
 
->>>>>>> 346340c (feat: add Info/Details sections, iframe assets & lazy-load shimmer for projects)
 ---
 ### [Automated Human Capital Management System (AHCM)](https://drive.google.com/drive/folders/0B9gQb-9dKj0uM1h5eWRlRXhpUmc?resourcekey=0--sNi2HxA2uTPENpWuYTB-A&usp=drive_link)
 ##### Recommendation System, NLP, Microservices, Ontology, IEEE Conference Paper | 2017
@@ -101,12 +98,6 @@
 #### assets
 - <iframe src="https://drive.google.com/file/d/1yoS9IF6sItCEq_goqQKwLHnm_NISH5a1/preview" width="640" height="480"></iframe>
 - <iframe src="https://drive.google.com/file/d/1Im6PK8JeScNhqxTtwv5QRRBBkP5S0OkG/preview" width="640" height="480"></iframe>
-
-
----
-### [SEAS Face Recognition Database](https://github.com/hellosaumil/SEAS-FR-DB)
-##### Face Recognition, Benchmark Dataset, Open-Source, Computer Vision | 2016
-- `Face Recognition Database` for SEAS, Ahmedabad University with benchmark datasets for `face recognition` research in `computer vision` and `machine learning`.
 
 ---
 ## Data Science & Cloud Computing - Coursework
