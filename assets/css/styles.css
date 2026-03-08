@@ -1433,12 +1433,55 @@ a:hover {
 /* ── Footer ── */
 .footer {
     position: relative;
-    padding: 48px 0;
-    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+}
+
+.footer__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer__copyright {
     font-family: var(--font-mono);
     font-size: 0.83rem;
     color: var(--text-muted);
-    border-top: 1px solid var(--border);
+    text-align: left;
+}
+
+.footer__acknowledgement {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-align: right;
+    line-height: 1.5;
+}
+
+.footer__acknowledgement a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s;
+}
+
+.footer__acknowledgement a:hover {
+    color: var(--accent);
+}
+
+/* Tablet & Mobile: stack and center to prevent overflow */
+@media (max-width: 900px) {
+    .footer__container {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .footer__copyright,
+    .footer__acknowledgement {
+        text-align: center;
+    }
 }
 
 /* ── Responsive ── */
