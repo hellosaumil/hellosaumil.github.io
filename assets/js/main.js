@@ -116,6 +116,46 @@ if (scrollDownChevron) {
 window.addEventListener('scroll', updateScrollChevrons);
 updateScrollChevrons();
 
+/* ── Scroll Snapping (Wheel Event) ── */
+let lastWheelTime = 0;
+window.addEventListener('wheel', (e) => {
+    // Only intercept if no expanded card/modal
+    if (document.querySelector('.ed-card.is-expanded')) return;
+    if (typeof mediaModal !== 'undefined' && mediaModal.isOpen()) return;
+
+    // Ignore very small trackpad movements
+    if (Math.abs(e.deltaY) < 10) return;
+
+    const currentIdx = getCurrentSectionIndex();
+    const currentSection = document.getElementById(sectionIds[currentIdx]);
+    if (!currentSection) return;
+
+    const rect = currentSection.getBoundingClientRect();
+    const atTop = rect.top >= -10;
+    const atBottom = rect.bottom <= window.innerHeight + 10;
+
+    const now = Date.now();
+    const dir = e.deltaY > 0 ? 'next' : 'prev';
+
+    if (dir === 'next' && atBottom) {
+        if (currentIdx < sectionIds.length - 1) {
+            e.preventDefault();
+            if (now - lastWheelTime > 800) {
+                navigateToSection('next');
+                lastWheelTime = now;
+            }
+        }
+    } else if (dir === 'prev' && atTop) {
+        if (currentIdx > 0) {
+            e.preventDefault();
+            if (now - lastWheelTime > 800) {
+                navigateToSection('prev');
+                lastWheelTime = now;
+            }
+        }
+    }
+}, { passive: false });
+
 /* ── Keyboard: section nav + expanded card controls ── */
 document.addEventListener('keydown', (e) => {
     if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
