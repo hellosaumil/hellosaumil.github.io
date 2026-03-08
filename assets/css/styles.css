@@ -861,18 +861,33 @@ a:hover {
 
 .about__photo-wrapper {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     margin: 24px auto 40px;
+    width: 200px;
+    height: 200px;
     filter: drop-shadow(0 0px 50px rgba(0, 0, 0, 0.20));
+
+    /* Apply mask to wrapper so it crops the over-sized counter-rotated image */
+    -webkit-mask-image: url('../images/shape_mask.svg');
+    mask-image: url('../images/shape_mask.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+
+    /* Spin the entire masked frame */
+    animation: spin-mask 20s linear infinite;
 }
 
 .about__photo-border {
     position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
+    inset: 0;
     background-color: var(--accent);
+    /* Border mask is no longer needed here as the wrapper handles it, but keeping it for the parallax offset effect */
     -webkit-mask-image: url('../images/shape_mask.svg');
     mask-image: url('../images/shape_mask.svg');
     -webkit-mask-size: contain;
@@ -891,19 +906,33 @@ a:hover {
 }
 
 .about__photo {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     object-fit: cover;
     user-select: none;
     -webkit-user-drag: none;
-    -webkit-mask-image: url('../images/shape_mask.svg');
-    mask-image: url('../images/shape_mask.svg');
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    mask-position: center;
+    /* Counter-rotate the image to keep it upright while the mask spins */
+    animation: counter-spin-mask 20s linear infinite;
+}
+
+@keyframes spin-mask {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes counter-spin-mask {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-360deg);
+    }
 }
 
 .about__bio {
