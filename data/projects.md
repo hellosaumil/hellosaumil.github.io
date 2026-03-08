@@ -12,12 +12,12 @@
 
 #### assets
 
-- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Full_Demo-Dark-Mode.gif
-- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Full_Demo-Light-Mode.gif
-- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Demo_Stills-OAI_Dark.gif
-- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Demo_Stills-OAI_Light.gif
-- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Demo_Stills-MSFT_Dark.gif
-- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Demo_Stills-MSFT_Light.gif
+- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Full_Demo-Dark_Mode.gif
+- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Full_Demo-Light_Mode.gif
+- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Demo_Stills-OAI-Dark_Mode.gif
+- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Demo_Stills-OAI-Light_Mode.gif
+- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Demo_Stills-MSFT-Dark_Mode.gif
+- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Demo_Stills-MSFT-Light_Mode.gif
 
 ---
 
