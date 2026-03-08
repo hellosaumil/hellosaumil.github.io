@@ -751,13 +751,51 @@ function reorderShowcases(theme) {
         if (!locked) resetBorder();
     });
 
-    // Tap/click anywhere on about section toggles lock
-    aboutSection.addEventListener('click', function () {
+    // Tap/click anywhere on about section toggles lock & animation
+    aboutSection.addEventListener('click', function (e) {
+        // If clicking a link, don't toggle
+        if (e.target.closest('a')) return;
+
         locked = !locked;
         wrapper.style.cursor = locked ? 'default' : 'pointer';
 
-        if (locked) resetBorder();
-        // Unlocked: tracking resumes on next mousemove
+        const animatedEls = [
+            wrapper.querySelector('.about__photo-border'),
+            wrapper.querySelector('.about__photo-inner'),
+            wrapper.querySelector('.about__photo')
+        ].filter(Boolean);
+
+        if (locked) {
+            resetBorder();
+
+            // 1. Capture current computed rotation matrix as inline style
+            animatedEls.forEach(el => {
+                const style = window.getComputedStyle(el);
+                el.style.transform = style.transform;
+            });
+
+            // 2. Enable transition class
+            wrapper.classList.add('is-resetting');
+
+            // 3. Glide back to zero in next frame
+            requestAnimationFrame(() => {
+                animatedEls.forEach(el => {
+                    el.style.transform = 'rotate(0deg)';
+                });
+            });
+
+            // 4. Once transition finishes, switch to absolute static state
+            setTimeout(() => {
+                if (locked) {
+                    wrapper.classList.remove('is-resetting');
+                    wrapper.classList.add('is-reset');
+                    animatedEls.forEach(el => el.style.transform = '');
+                }
+            }, 850); // Slightly past 800ms transition
+        } else {
+            wrapper.classList.remove('is-reset', 'is-resetting');
+            animatedEls.forEach(el => el.style.transform = '');
+        }
     });
 
     // Hint that the photo area is tappable
