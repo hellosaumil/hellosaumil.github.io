@@ -31,11 +31,11 @@
 
 #### assets
 
-- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Feature_Highlight-Dark_Mode-Demo.png
-- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Feature_Highlight-CSS_Inspector1-Light_Mode-Demo.png
-- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Feature_Highlight-CSS_Inspector2-Light_Mode-Demo.png
-- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Hero-Light_Mode.png
-- https://raw.githubusercontent.com/hellosaumil/JobPostHighlightsExtension/main/docs/assets/Hero-Dark_Mode.png
+- https://raw.githubusercontent.com/hellosaumil/WebResume/main/docs/assets/Feature_Highlight-Dark_Mode-Demo.png
+- https://raw.githubusercontent.com/hellosaumil/WebResume/main/docs/assets/Feature_Highlight-CSS_Inspector1-Light_Mode-Demo.png
+- https://raw.githubusercontent.com/hellosaumil/WebResume/main/docs/assets/Feature_Highlight-CSS_Inspector2-Light_Mode-Demo.png
+- https://raw.githubusercontent.com/hellosaumil/WebResume/main/docs/assets/Hero-Light_Mode.png
+- https://raw.githubusercontent.com/hellosaumil/WebResume/main/docs/assets/Hero-Dark_Mode.png
 
 ---
 
