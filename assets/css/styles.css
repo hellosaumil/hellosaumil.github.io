@@ -862,6 +862,8 @@ a:hover {
 .about__photo-wrapper {
     position: relative;
     display: inline-block;
+    width: 200px;
+    height: 200px;
     margin: 24px auto 40px;
     filter: drop-shadow(0 0px 50px rgba(0, 0, 0, 0.20));
 }
